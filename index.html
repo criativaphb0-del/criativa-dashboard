@@ -318,6 +318,7 @@ select.ctrl{background:var(--bg3);border:1px solid var(--border2);color:var(--wh
 
 const GITHUB_TOKEN = localStorage.getItem('cri4_gh_token') || '';
 const GITHUB_USER  = 'criativaphb0-del';
+const GIST_ID = '46a0fea910f1006dde3f1723989d6c83';
 const REPO_NAME    = 'criativa-dashboard';
 
 const ACCOUNTS=[
@@ -358,8 +359,48 @@ let charts={trend:null,gender:null};
 
 // ── STORAGE ──
 const DK=(id,p)=>`cri4_${id}_${p}_manual`;
-function saveManual(d){try{localStorage.setItem(DK(curAcc.id,curPeriod),JSON.stringify(d))}catch(e){}}
+function saveManual(d){
+  try{localStorage.setItem(DK(curAcc.id,curPeriod),JSON.stringify(d))}catch(e){}
+  gistSave(DK(curAcc.id,curPeriod), d);
+}
+async function loadManualAsync(){
+  const fromGist = await gistLoad(DK(curAcc?.id, curPeriod));
+  if(fromGist) return fromGist;
+  return loadManual();
+}
 function loadManual(){try{const v=localStorage.getItem(DK(curAcc?.id,curPeriod));if(v)return JSON.parse(v)}catch(e){}return{agend:'',comp:'',nocomp:'',fat:'',followup:'',vendas:''}}
+
+
+// ── GIST STORAGE ──
+async function gistSave(key, value) {
+  const ghToken = localStorage.getItem('cri4_gh_token');
+  if (!ghToken) { saveLocalFallback(key, value); return; }
+  try {
+    const res = await fetch('https://api.github.com/gists/' + GIST_ID, {
+      method: 'PATCH',
+      headers: { 'Authorization': 'Bearer ' + ghToken, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ files: { ['cri4_' + key + '.json']: { content: JSON.stringify(value) } } })
+    });
+    if (!res.ok) saveLocalFallback(key, value);
+  } catch(e) { saveLocalFallback(key, value); }
+}
+
+async function gistLoad(key) {
+  const ghToken = localStorage.getItem('cri4_gh_token');
+  if (!ghToken) return loadLocalFallback(key);
+  try {
+    const res = await fetch('https://api.github.com/gists/' + GIST_ID, {
+      headers: { 'Authorization': 'Bearer ' + ghToken, 'Accept': 'application/vnd.github+json' }
+    });
+    const data = await res.json();
+    const file = data.files?.['cri4_' + key + '.json'];
+    if (file?.content) return JSON.parse(file.content);
+  } catch(e) {}
+  return loadLocalFallback(key);
+}
+
+function saveLocalFallback(key, value) { try { localStorage.setItem('cri4_' + key, JSON.stringify(value)); } catch(e) {} }
+function loadLocalFallback(key) { try { const v = localStorage.getItem('cri4_' + key); return v ? JSON.parse(v) : null; } catch(e) { return null; } }
 
 // ── SIDEBAR TOGGLE ──
 function toggleSidebar(){
