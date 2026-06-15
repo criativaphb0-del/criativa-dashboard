@@ -80,13 +80,37 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--white);fo
 .client-pill{display:flex;align-items:center;gap:7px;background:var(--bg3);border:1px solid var(--border2);border-radius:100px;padding:4px 11px 4px 5px}
 .cp-av{width:20px;height:20px;border-radius:50%;font-size:8px;font-weight:600;display:flex;align-items:center;justify-content:center;color:#fff}
 .cp-nm{font-size:12px;font-weight:500}
-.tb-right{display:flex;align-items:center;gap:7px}
-select.ctrl{background:var(--bg3);border:1px solid var(--border2);color:var(--white);border-radius:var(--radius-sm);padding:5px 9px;font-size:11px;font-family:'DM Sans',sans-serif;cursor:pointer}
+.tb-right{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
 .btn-refresh{display:flex;align-items:center;gap:5px;padding:6px 12px;background:var(--p);color:#fff;border:none;border-radius:var(--radius-sm);font-size:11px;font-weight:600;cursor:pointer;transition:opacity .2s;letter-spacing:.2px}
 .btn-refresh:hover{opacity:.85}
 .btn-refresh.loading svg{animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .btn-refresh svg{width:12px;height:12px}
+
+/* ── PERIOD PICKER ─── */
+.period-picker{position:relative}
+.period-trigger{display:flex;align-items:center;gap:7px;padding:6px 11px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);cursor:pointer;font-size:11px;font-family:'DM Sans',sans-serif;color:var(--white);white-space:nowrap;transition:border-color .15s;min-width:160px}
+.period-trigger:hover{border-color:var(--p)}
+.period-trigger svg{width:12px;height:12px;opacity:.5;flex-shrink:0}
+.period-trigger .pt-label{flex:1}
+.period-trigger .pt-arrow{width:10px;height:10px;opacity:.4;transition:transform .2s}
+.period-picker.open .pt-arrow{transform:rotate(180deg)}
+.period-dropdown{position:absolute;top:calc(100% + 6px);right:0;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:.5rem;z-index:100;min-width:280px;box-shadow:0 16px 40px rgba(0,0,0,.5);display:none}
+.period-picker.open .period-dropdown{display:block}
+.pd-section{font-size:9px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);padding:.4rem .5rem .25rem;margin-top:.25rem}
+.pd-section:first-child{margin-top:0}
+.pd-presets{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-bottom:.25rem}
+.pd-preset{padding:6px 9px;background:transparent;border:none;border-radius:var(--radius-sm);color:rgba(255,255,255,.7);font-size:11px;cursor:pointer;text-align:left;font-family:'DM Sans',sans-serif;transition:background .12s;white-space:nowrap}
+.pd-preset:hover{background:rgba(255,255,255,.06);color:var(--white)}
+.pd-preset.active{background:rgba(134,33,254,.2);color:var(--p3);font-weight:600}
+.pd-divider{height:1px;background:var(--border);margin:.4rem 0}
+.pd-custom{padding:.4rem .25rem .25rem}
+.pd-custom-row{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.pd-custom label{font-size:10px;color:var(--muted);width:36px;flex-shrink:0}
+.pd-custom input[type=date]{flex:1;padding:6px 8px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--white);font-family:'DM Sans',sans-serif;font-size:11px;cursor:pointer;color-scheme:dark}
+.pd-custom input[type=date]:focus{outline:none;border-color:var(--p)}
+.pd-apply{width:100%;padding:7px;background:var(--p);color:#fff;border:none;border-radius:var(--radius-sm);font-size:11px;font-weight:600;cursor:pointer;margin-top:4px;font-family:'DM Sans',sans-serif;transition:opacity .15s}
+.pd-apply:hover{opacity:.85}
 
 /* ── CONTENT ─── */
 .content{padding:1.25rem 1.5rem;flex:1}
@@ -289,14 +313,46 @@ select.ctrl{background:var(--bg3);border:1px solid var(--border2);color:var(--wh
         </div>
       </div>
       <div class="tb-right">
-        <select class="ctrl" id="period-sel" onchange="onPeriod()">
-          <option value="last_14d">Últimos 15 dias</option>
-          <option value="this_month" selected>Este mês</option>
-          <option value="last_month">Mês anterior</option>
-        </select>
+        <div class="period-picker" id="period-picker">
+          <div class="period-trigger" onclick="togglePeriodPicker()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span class="pt-label" id="period-label">Este mês</span>
+            <svg class="pt-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="period-dropdown">
+            <div class="pd-section">Atalhos rápidos</div>
+            <div class="pd-presets">
+              <button class="pd-preset" onclick="applyPreset('today','Hoje')">Hoje</button>
+              <button class="pd-preset" onclick="applyPreset('yesterday','Ontem')">Ontem</button>
+              <button class="pd-preset" onclick="applyPreset('last_7d','Últimos 7 dias')">Últimos 7 dias</button>
+              <button class="pd-preset" onclick="applyPreset('last_14d','Últimos 15 dias')">Últimos 15 dias</button>
+              <button class="pd-preset active" onclick="applyPreset('this_month','Este mês')">Este mês</button>
+              <button class="pd-preset" onclick="applyPreset('last_month','Mês anterior')">Mês anterior</button>
+              <button class="pd-preset" onclick="applyPreset('last_30d','Últimos 30 dias')">Últimos 30 dias</button>
+              <button class="pd-preset" onclick="applyPreset('last_90d','Últimos 3 meses')">Últimos 3 meses</button>
+              <button class="pd-preset" onclick="applyPreset('last_180d','Últimos 6 meses')">Últimos 6 meses</button>
+              <button class="pd-preset" onclick="applyPreset('this_year','Este ano')">Este ano</button>
+              <button class="pd-preset" onclick="applyPreset('last_year','Ano anterior')">Ano anterior</button>
+              <button class="pd-preset" onclick="applyPreset('maximum','Todo o histórico')">Todo histórico</button>
+            </div>
+            <div class="pd-divider"></div>
+            <div class="pd-section">Período personalizado</div>
+            <div class="pd-custom">
+              <div class="pd-custom-row">
+                <label>De</label>
+                <input type="date" id="date-from" max="">
+              </div>
+              <div class="pd-custom-row">
+                <label>Até</label>
+                <input type="date" id="date-to" max="">
+              </div>
+              <button class="pd-apply" onclick="applyCustomPeriod()">Aplicar período →</button>
+            </div>
+          </div>
+        </div>
         <button class="btn-refresh" id="rb" onclick="fetchAll()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-          Atualizar dados
+          Atualizar
         </button>
       </div>
     </div>
@@ -353,7 +409,7 @@ const ACCOUNTS=[
   {id:'1305367874878865',name:'Camila Santos Arq.',niche:'Arquitetura',color:'#0891B2',i:'CS'},
 ];
 
-let TOKEN='', curAcc=null, curPeriod='this_month';
+let TOKEN='', curAcc=null, curPeriod='this_month', curPeriodLabel='Este mês', curCustomRange=null;
 let STATE={account:null,age:null,platform:null,creatives:null};
 let charts={trend:null,gender:null};
 
@@ -447,24 +503,77 @@ function buildSidebar(){
 // ── SELECT / PERIOD ──
 function selectAcc(i){curAcc=ACCOUNTS[i];buildSidebar();updatePill();fetchAll()}
 function updatePill(){if(!curAcc)return;const av=document.getElementById('pill-av');av.textContent=curAcc.i;av.style.background=curAcc.color;document.getElementById('pill-nm').textContent=curAcc.name}
-function onPeriod(){curPeriod=document.getElementById('period-sel').value;if(curAcc)fetchAll()}
+// ── PERIOD PICKER ──
+function togglePeriodPicker(){
+  const pk=document.getElementById('period-picker');
+  pk.classList.toggle('open');
+  // Setar max das datas como hoje
+  const today=new Date().toISOString().split('T')[0];
+  document.getElementById('date-from').max=today;
+  document.getElementById('date-to').max=today;
+  // Fechar ao clicar fora
+  if(pk.classList.contains('open')){
+    setTimeout(()=>document.addEventListener('click',closePicker,{once:true}),0);
+  }
+}
+function closePicker(e){
+  const pk=document.getElementById('period-picker');
+  if(pk&&!pk.contains(e.target))pk.classList.remove('open');
+}
+function applyPreset(preset, label){
+  curPeriod=preset;
+  curPeriodLabel=label;
+  curCustomRange=null;
+  document.getElementById('period-label').textContent=label;
+  // Destacar ativo
+  document.querySelectorAll('.pd-preset').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('period-picker').classList.remove('open');
+  if(curAcc)fetchAll();
+}
+function applyCustomPeriod(){
+  const from=document.getElementById('date-from').value;
+  const to=document.getElementById('date-to').value;
+  if(!from||!to){toast('Selecione as duas datas.','err');return}
+  if(from>to){toast('Data inicial maior que a final.','err');return}
+  curPeriod='custom';
+  curCustomRange={since:from, until:to};
+  const fmtDate=d=>new Date(d+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit'});
+  curPeriodLabel=`${fmtDate(from)} → ${fmtDate(to)}`;
+  document.getElementById('period-label').textContent=curPeriodLabel;
+  document.querySelectorAll('.pd-preset').forEach(b=>b.classList.remove('active'));
+  document.getElementById('period-picker').classList.remove('open');
+  if(curAcc)fetchAll();
+}
 
 // ── FETCH ALL ──
 async function fetchAll(){
   if(!curAcc||!TOKEN)return;
   setLoading(true);
   renderSkeleton();
-  const p=curPeriod;
+
   const base=`https://graph.facebook.com/v19.0/act_${curAcc.id}/insights`;
   const T=`&access_token=${TOKEN}`;
   const flds='spend,reach,impressions,clicks,ctr,cpm,cpc,frequency,actions';
 
+  // Montar parâmetro de período
+  // Presets nativos da Meta API
+  const META_PRESETS=['today','yesterday','last_7d','last_14d','this_month','last_month','last_30d','last_90d','last_180d','this_year','last_year','maximum'];
+  let periodParam='';
+  if(curPeriod==='custom'&&curCustomRange){
+    periodParam=`&time_range=${encodeURIComponent(JSON.stringify(curCustomRange))}`;
+  } else if(META_PRESETS.includes(curPeriod)){
+    periodParam=`&date_preset=${curPeriod}`;
+  } else {
+    periodParam=`&date_preset=this_month`;
+  }
+
   try{
     const [accR,ageR,platR,crR]=await Promise.all([
-      fetch(`${base}?fields=${flds}&date_preset=${p}${T}`).then(r=>r.json()),
-      fetch(`${base}?fields=${flds}&date_preset=${p}&breakdowns=age,gender${T}`).then(r=>r.json()),
-      fetch(`${base}?fields=${flds}&date_preset=${p}&breakdowns=publisher_platform${T}`).then(r=>r.json()),
-      fetch(`${base}?fields=ad_name,spend,impressions,reach,clicks,ctr,cpm,cpc,frequency,actions&date_preset=${p}&level=ad${T}`).then(r=>r.json()),
+      fetch(`${base}?fields=${flds}${periodParam}${T}`).then(r=>r.json()),
+      fetch(`${base}?fields=${flds}${periodParam}&breakdowns=age,gender${T}`).then(r=>r.json()),
+      fetch(`${base}?fields=${flds}${periodParam}&breakdowns=publisher_platform${T}`).then(r=>r.json()),
+      fetch(`${base}?fields=ad_name,spend,impressions,reach,clicks,ctr,cpm,cpc,frequency,actions${periodParam}&level=ad${T}`).then(r=>r.json()),
     ]);
 
     if(accR.error){toast('Erro Meta API: '+accR.error.message,'err');setLoading(false);return}
@@ -480,7 +589,7 @@ async function fetchAll(){
     STATE.manual=m;
 
     renderDashboard();
-    document.getElementById('footer-txt').textContent=`Atualizado ${new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})} — ${curAcc.name}`;
+    document.getElementById('footer-txt').textContent=`Atualizado ${new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})} — ${curAcc.name} · ${curPeriodLabel}`;
     toast('Dados atualizados ✓','ok');
   }catch(e){toast('Erro de conexão. Verifique o token.','err')}
   setLoading(false);
@@ -538,7 +647,7 @@ function renderDashboard(){
   const txClick=impr>0?clicks/impr*100:0;
 
   // Period label
-  const periodLabel=document.getElementById('period-sel').selectedOptions[0].text;
+  const periodLabel=curPeriodLabel||'Período selecionado';
 
   // ── Age breakdown ──
   const ages=STATE.age.reduce((acc,row)=>{
