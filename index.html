@@ -325,7 +325,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--white);fo
               <button class="pd-preset" onclick="applyPreset('today','Hoje')">Hoje</button>
               <button class="pd-preset" onclick="applyPreset('yesterday','Ontem')">Ontem</button>
               <button class="pd-preset" onclick="applyPreset('last_7d','Últimos 7 dias')">Últimos 7 dias</button>
-              <button class="pd-preset" onclick="applyPreset('last_14d','Últimos 15 dias')">Últimos 15 dias</button>
+              <button class="pd-preset" onclick="applyPreset('last_14d','Últimos 14 dias')">Últimos 14 dias</button>
               <button class="pd-preset active" onclick="applyPreset('this_month','Este mês')">Este mês</button>
               <button class="pd-preset" onclick="applyPreset('last_month','Mês anterior')">Mês anterior</button>
               <button class="pd-preset" onclick="applyPreset('last_30d','Últimos 30 dias')">Últimos 30 dias</button>
@@ -557,11 +557,21 @@ async function fetchAll(){
   const flds='spend,reach,impressions,clicks,ctr,cpm,cpc,frequency,actions';
 
   // Montar parâmetro de período
-  // Presets nativos da Meta API
-  const META_PRESETS=['today','yesterday','last_7d','last_14d','this_month','last_month','last_30d','last_90d','last_180d','this_year','last_year','maximum'];
+  // Presets nativos válidos da Meta API (#100 error se usar outros)
+  const META_PRESETS=['today','yesterday','last_7d','last_14d','last_28d','last_30d','this_month','last_month','this_quarter','last_quarter','this_year','maximum','data_maximum'];
+
+  // Helpers para calcular time_range com datas reais
+  function dateRange(days){ const to=new Date(),from=new Date();from.setDate(to.getDate()-days);return{since:from.toISOString().split('T')[0],until:to.toISOString().split('T')[0]}; }
+  function lastYearRange(){ const y=new Date().getFullYear()-1;return{since:`${y}-01-01`,until:`${y}-12-31`}; }
+
+  // Presets que precisam ser convertidos para time_range
+  const PRESET_TO_RANGE={last_90d:()=>dateRange(90),last_180d:()=>dateRange(180),last_year:()=>lastYearRange()};
+
   let periodParam='';
   if(curPeriod==='custom'&&curCustomRange){
     periodParam=`&time_range=${encodeURIComponent(JSON.stringify(curCustomRange))}`;
+  } else if(PRESET_TO_RANGE[curPeriod]){
+    periodParam=`&time_range=${encodeURIComponent(JSON.stringify(PRESET_TO_RANGE[curPeriod]()))}`;
   } else if(META_PRESETS.includes(curPeriod)){
     periodParam=`&date_preset=${curPeriod}`;
   } else {
