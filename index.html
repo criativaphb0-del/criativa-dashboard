@@ -635,13 +635,14 @@ async function fetchAll(){
   }
 
   try{
-    const [accR,ageR,platR,crR,regR,crCopyR]=await Promise.all([
+    const [accR,ageR,platR,crR,regR,crCopyR,adAgeR]=await Promise.all([
       fetch(`${base}?fields=${flds}${periodParam}${T}`).then(r=>r.json()),
       fetch(`${base}?fields=${flds}${periodParam}&breakdowns=age,gender${T}`).then(r=>r.json()),
       fetch(`${base}?fields=${flds}${periodParam}&breakdowns=publisher_platform${T}`).then(r=>r.json()),
       fetch(`${base}?fields=ad_name,spend,impressions,reach,clicks,ctr,cpm,cpc,frequency,actions${periodParam}&level=ad${T}`).then(r=>r.json()),
       fetch(`${base}?fields=spend,reach,impressions,clicks,ctr,actions${periodParam}&breakdowns=region${T}`).then(r=>r.json()),
       fetch(`https://graph.facebook.com/v19.0/act_${curAcc.id}/ads?fields=name,creative{title,body,object_story_spec},adset{name},insights.date_preset(${curPeriod==='custom'&&curCustomRange?`time_range(${JSON.stringify(curCustomRange)})`:curPeriod}){spend,impressions,clicks,ctr,cpm,actions}&limit=20&access_token=${TOKEN}`).then(r=>r.json()),
+      fetch(`${base}?fields=ad_name,spend,impressions,clicks,ctr,actions${periodParam}&level=ad&breakdowns=age,gender${T}`).then(r=>r.json()),
     ]);
 
     if(accR.error){toast('Erro Meta API: '+accR.error.message,'err');setLoading(false);return}
@@ -653,6 +654,7 @@ async function fetchAll(){
       creatives:(crR.data||[]).filter(d=>parseFloat(d.spend||0)>0).sort((a,b)=>parseFloat(b.spend)-parseFloat(a.spend)),
       regions:  (regR.data||[]).filter(d=>parseFloat(d.spend||0)>0).sort((a,b)=>parseFloat(b.spend)-parseFloat(a.spend)),
       adsCopy:  (crCopyR.data||[]),
+      adAge:    (adAgeR.data||[]),
     };
 
     const m=loadManual();
@@ -866,6 +868,13 @@ function renderDashboard(){
     <div id="audience-matrix" style="overflow-x:auto"></div>
   </div>
 
+  <!-- CRUZAMENTO CRIATIVO × PÚBLICO -->
+  <div class="sec"><span class="dot" style="background:var(--pk)"></span>Cruzamento — criativo × público (idade × gênero)</div>
+  <div class="card" style="margin-bottom:1.25rem">
+    <div class="card-title"><span class="dot" style="background:var(--pk2)"></span>Qual anúncio performa com qual segmento — CTR, cliques e conversas por faixa</div>
+    <div id="creative-audience-matrix" style="overflow-x:auto"></div>
+  </div>
+
   <!-- FUNIL DE ESTRATÉGIA -->
   <div class="sec"><span class="dot" style="background:var(--g)"></span>Funil de conversão da estratégia</div>
   <div class="grid-2" style="margin-bottom:1.25rem">
@@ -1047,7 +1056,7 @@ function renderDashboard(){
   // Render sub-components
   requestAnimationFrame(()=>{
     renderFunnel(leads,agend,comp,impr,reach,clicks,conv);
-    renderStrategyFunnel(impr,reach,clicks,conv,leads,agend,comp,vendas);
+    renderStrategyFunnel(impr,reach,clicks,conv,leads,agend,comp,vendas,invest);
     renderCrossCards(invest,leads,agend,comp,fat,followup,vendas);
     renderAgeChart(ageKeys,ages);
     renderPlatCharts(plats,platColor);
@@ -1055,6 +1064,7 @@ function renderDashboard(){
     renderAudienceMatrix(STATE.age);
     renderAdsCopy(STATE.adsCopy,ctr);
     renderBrazilMap(STATE.regions);
+    renderCreativeAudience(STATE.adAge);
   });
 }
 
@@ -1128,6 +1138,7 @@ function liveCalc(){
   renderCrossCards(invest,leads,agend,comp,fat,followup,vendas);
   const impr=parseInt(d.impressions)||0,reach=parseInt(d.reach)||0,clicks=parseInt(d.clicks)||0;
   renderFunnel(leads,agend,comp,impr,reach,clicks,conv);
+  renderStrategyFunnel(impr,reach,clicks,conv,leads,agend,comp,vendas,invest);
 }
 
 function salvar(){
@@ -1253,59 +1264,61 @@ function renderRegions(regions){
 }
 
 // ── RENDER STRATEGY FUNNEL ──
-function renderStrategyFunnel(impr,reach,clicks,conv,leads,agend,comp,vendas){
+function renderStrategyFunnel(impr,reach,clicks,conv,leads,agend,comp,vendas,invest){
   const el=document.getElementById('strategy-funnel');
   const cc=document.getElementById('funnel-chart');
   if(!el)return;
 
+  // Custo acumulado por etapa
+  function custoEtapa(v){ return invest>0&&v>0?invest/v:0; }
+
   const steps=[
-    {l:'Impressões',      v:impr,   color:'#6366f1', emoji:'👁'},
-    {l:'Alcance único',   v:reach,  color:'#8621fe', emoji:'🎯'},
-    {l:'Cliques no link', v:clicks, color:'#34c3f0', emoji:'🖱'},
-    {l:'Conversas (leads)',v:conv,  color:'#22c55e', emoji:'💬'},
-    {l:'Agendamentos',    v:agend,  color:'#f59e0b', emoji:'📅'},
-    {l:'Comparecimentos', v:comp,   color:'#ec4899', emoji:'✅'},
-    {l:'Vendas',          v:vendas, color:'#4ade80', emoji:'💰'},
+    {l:'Impressões',      v:impr,   color:'#6366f1', emoji:'👁',  source:'meta',   custo:0},
+    {l:'Alcance único',   v:reach,  color:'#8621fe', emoji:'🎯', source:'meta',   custo:0},
+    {l:'Cliques',         v:clicks, color:'#34c3f0', emoji:'🖱', source:'meta',   custo:custoEtapa(clicks)},
+    {l:'Conversas',       v:conv,   color:'#22c55e', emoji:'💬', source:'meta',   custo:custoEtapa(conv)},
+    {l:'Agendamentos',    v:agend,  color:'#f59e0b', emoji:'📅', source:'manual', custo:custoEtapa(agend)},
+    {l:'Comparecimentos', v:comp,   color:'#ec4899', emoji:'✅', source:'manual', custo:custoEtapa(comp)},
+    {l:'Vendas',          v:vendas, color:'#4ade80', emoji:'💰', source:'manual', custo:custoEtapa(vendas)},
   ];
 
   const maxV=Math.max(...steps.map(s=>s.v),1);
-  const widths=[100,88,75,62,50,38,26];
+  const widths=[100,92,82,70,57,44,30];
 
-  el.innerHTML=steps.map((s,i)=>{
-    const prev=i>0?steps[i-1].v:s.v;
-    const pct=prev>0&&i>0&&s.v>0?Math.round(s.v/prev*100):null;
-    const w=widths[i]||20;
-    return `<div class="sf-step" style="width:${w}%">
-      <div class="sf-bar" style="background:${s.color}22;border:1px solid ${s.color}44;width:100%">
-        <div class="sf-label">${s.emoji} ${s.l}</div>
-        <div style="display:flex;align-items:center;gap:6px">
-          <div class="sf-val">${s.v>0?fmt(s.v):'—'}</div>
-          ${pct!==null?`<div class="sf-pct">${pct}%</div>`:''}
+  el.innerHTML=`<div style="display:flex;flex-direction:column;align-items:center;gap:2px;width:100%;padding:.25rem 0">
+    ${steps.map((s,i)=>{
+      const prev=i>0?steps[i-1].v:s.v;
+      const pct=prev>0&&i>0&&s.v>0?Math.round(s.v/prev*100):null;
+      const w=widths[i]||25;
+      const isManual=s.source==='manual';
+      const hasData=s.v>0;
+      return`<div style="width:${w}%;min-width:200px;display:flex;flex-direction:column;align-items:center">
+        <div style="width:100%;background:${s.color}${hasData?'22':'0a'};border:1px solid ${s.color}${hasData?'44':'20'};border-radius:8px;padding:9px 14px;display:flex;align-items:center;justify-content:space-between;position:relative">
+          ${isManual?`<span style="position:absolute;top:-1px;right:8px;font-size:8px;background:${s.color}33;color:${s.color};padding:1px 6px;border-radius:0 0 4px 4px;font-weight:600">MANUAL</span>`:''}
+          <div style="display:flex;align-items:center;gap:7px">
+            <span style="font-size:14px">${s.emoji}</span>
+            <span style="font-size:11px;font-weight:500;color:${hasData?'#fff':'rgba(255,255,255,.4)'}">${s.l}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:14px;font-weight:700;color:${hasData?s.color:'rgba(255,255,255,.2)'}">${hasData?fmt(s.v):'—'}</span>
+            ${pct!==null?`<span style="font-size:10px;background:rgba(0,0,0,.3);padding:2px 7px;border-radius:100px;color:${pct>=50?'#4ade80':pct>=25?'#fbbf24':'#f87171'}">${pct}%</span>`:''}
+            ${s.custo>0?`<span style="font-size:9px;color:rgba(255,255,255,.4)">R$${s.custo.toFixed(2)}/un</span>`:''}
+          </div>
         </div>
-      </div>
-      ${i<steps.length-1?`<div class="sf-arrow">▼</div>`:''}
-    </div>`;
-  }).join('');
+        ${i<steps.length-1?`<div style="font-size:9px;color:rgba(255,255,255,.2);margin:1px 0">▼</div>`:''}
+      </div>`;
+    }).join('')}
+  </div>`;
 
-  // Gráfico de taxas de conversão por etapa
   if(cc){
     if(charts.funnel)charts.funnel.destroy();
-    const rates=steps.slice(1).map((s,i)=>{
-      const prev=steps[i].v;
-      return prev>0&&s.v>0?parseFloat((s.v/prev*100).toFixed(1)):0;
-    });
+    const labels=steps.slice(1).map(s=>s.l);
+    const rates=steps.slice(1).map((s,i)=>{const prev=steps[i].v;return prev>0&&s.v>0?parseFloat((s.v/prev*100).toFixed(1)):0;});
+    const colors=steps.slice(1).map(s=>s.color+'cc');
     charts.funnel=new Chart(cc,{
       type:'bar',
-      data:{
-        labels:steps.slice(1).map(s=>s.l),
-        datasets:[{
-          label:'Taxa de conversão %',
-          data:rates,
-          backgroundColor:steps.slice(1).map(s=>s.color+'cc'),
-          borderRadius:6,
-        }]
-      },
-      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      data:{labels,datasets:[{label:'Taxa de conversão %',data:rates,backgroundColor:colors,borderRadius:6}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${ctx.parsed.y}% de conversão`}}},
         scales:{
           y:{ticks:{color:'rgba(255,255,255,.3)',font:{size:10},callback:v=>v+'%'},grid:{color:'rgba(255,255,255,.05)'},max:100},
           x:{ticks:{color:'rgba(255,255,255,.35)',font:{size:9},maxRotation:30}},
@@ -1590,6 +1603,110 @@ function renderAdsCopy(adsCopy,avgCtr){
   const colors=['#8621fe','#34c3f0','#22c55e','#f59e0b','#ec4899','#6366f1','#14b8a6','#f97316','#a855f7','#06b6d4'];
   const tr=(s,n)=>s&&s!=='—'&&s.length>n?s.substring(0,n)+'…':(s||'—');
   listEl.innerHTML=`<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:11px"><thead><tr style="border-bottom:1px solid var(--border)"><th style="text-align:left;padding:8px 10px;font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:500;min-width:180px"># Nome do anúncio</th><th style="text-align:left;padding:8px;font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:500;min-width:140px">Título</th><th style="text-align:left;padding:8px;font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:500;min-width:180px">Legenda</th><th style="text-align:center;padding:8px;font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:500">Formato</th><th style="text-align:right;padding:8px;font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:500">Invest.</th><th style="text-align:right;padding:8px;font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:500">CTR</th><th style="text-align:right;padding:8px;font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:500">Cliques</th><th style="text-align:right;padding:8px;font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:500">Conversas</th><th style="text-align:right;padding:8px;font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:500">Engaj.</th><th style="text-align:left;padding:8px;font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:500;min-width:110px">Conjunto</th></tr></thead><tbody>${ads.map((ad,i)=>{const ins=ad.insights.data[0];const cr=ad.creative||{};const spec=cr.object_story_spec||{};const title=cr.title||spec.link_data?.name||spec.video_data?.title||'—';const body=cr.body||spec.link_data?.message||spec.video_data?.message||'—';const ft=detectFmt(ad);const fc=fmtColors[ft]||'#666';const sp=parseFloat(ins.spend||0);const ct=parseFloat(ins.ctr||0);const cl=parseInt(ins.clicks||0);let cv=0;if(ins.actions){const a=ins.actions.find(x=>x.action_type==='onsite_conversion.messaging_conversation_started_7d'||x.action_type==='messaging_first_reply');if(a)cv=parseInt(a.value)||0;}let eng=0;if(ins.actions){const a=ins.actions.find(x=>x.action_type==='page_engagement');if(a)eng=parseInt(a.value)||0;}const isTop=ct>=avgCtr*1.2;const col=colors[i%colors.length];return`<tr style="border-bottom:1px solid rgba(255,255,255,.04);${isTop?'background:rgba(134,33,254,.05)':''}"><td style="padding:9px 10px"><div style="display:flex;align-items:center;gap:6px"><span style="width:3px;height:34px;background:${col};border-radius:2px;flex-shrink:0;display:inline-block"></span><div><div style="font-weight:500;color:var(--white);line-height:1.3">${tr(ad.name,38)}</div>${isTop?'<span style="font-size:9px;background:rgba(134,33,254,.2);color:var(--p3);padding:1px 6px;border-radius:100px">★ Top CTR</span>':''}</div></div></td><td style="padding:9px 8px;color:var(--b2);font-weight:500">${tr(title,32)}</td><td style="padding:9px 8px;color:rgba(255,255,255,.6);line-height:1.4">${tr(body,55)}</td><td style="padding:9px 8px;text-align:center"><span style="background:${fc}20;color:${fc};border:1px solid ${fc}40;border-radius:100px;padding:2px 7px;font-size:9px;font-weight:600;white-space:nowrap">${fmtEmoji[ft]} ${ft}</span></td><td style="padding:9px 8px;text-align:right;font-weight:600">${fmtR(sp)}</td><td style="padding:9px 8px;text-align:right;font-weight:600;color:${ct>=avgCtr?'var(--g2)':'var(--r2)'}">${fmtP(ct)}</td><td style="padding:9px 8px;text-align:right">${fmt(cl)}</td><td style="padding:9px 8px;text-align:right;color:${cv>0?'var(--g2)':'var(--muted)'};font-weight:${cv>0?600:400}">${cv>0?cv:'—'}</td><td style="padding:9px 8px;text-align:right">${eng>0?fmt(eng):'—'}</td><td style="padding:9px 8px;color:var(--muted);font-size:10px">${ad.adset?.name?tr(ad.adset.name,22):'—'}</td></tr>`;}).join('')}</tbody></table></div>`;
+}
+
+// ── CRIATIVO × AUDIÊNCIA (idade × gênero) ──
+function renderCreativeAudience(adAge){
+  const el=document.getElementById('creative-audience-matrix');
+  if(!el)return;
+  if(!adAge||!adAge.length){
+    el.innerHTML='<div style="color:var(--muted);font-size:12px;padding:.75rem">Sem dados suficientes para cruzamento. A Meta exige volume mínimo por segmento.</div>';
+    return;
+  }
+
+  // Estrutura: {adName: {age_gender: {clicks,impr,spend,convs}}}
+  const matrix={};
+  const ageOrder=['13-17','18-24','25-34','35-44','45-54','55-64','65+'];
+  const genders=['female','male'];
+
+  adAge.forEach(row=>{
+    const ad=row.ad_name||'Sem nome';
+    const age=row.age||'?';
+    const gender=row.gender||'unknown';
+    if(!ageOrder.includes(age)||!genders.includes(gender))return;
+    if(!matrix[ad])matrix[ad]={};
+    const key=`${age}_${gender}`;
+    if(!matrix[ad][key])matrix[ad][key]={clicks:0,impr:0,spend:0,convs:0};
+    matrix[ad][key].clicks+=parseInt(row.clicks||0);
+    matrix[ad][key].impr+=parseInt(row.impressions||0);
+    matrix[ad][key].spend+=parseFloat(row.spend||0);
+    if(row.actions){
+      const a=row.actions.find(x=>x.action_type==='onsite_conversion.messaging_conversation_started_7d'||x.action_type==='messaging_first_reply');
+      if(a)matrix[ad][key].convs+=parseInt(a.value)||0;
+    }
+  });
+
+  const ads=Object.keys(matrix).slice(0,8);
+  if(!ads.length){el.innerHTML='<div style="color:var(--muted);font-size:12px;padding:.75rem">Volume insuficiente para exibir cruzamento.</div>';return;}
+
+  // Calcular maxCTR global para heatmap
+  let maxCtr=0;
+  ads.forEach(ad=>ageOrder.forEach(age=>genders.forEach(g=>{
+    const d=matrix[ad][`${age}_${g}`];
+    if(!d)return;
+    const ctr=d.impr>0?d.clicks/d.impr*100:0;
+    if(ctr>maxCtr)maxCtr=ctr;
+  })));
+
+  function heatBg(ctr){
+    if(!ctr||maxCtr===0)return'rgba(255,255,255,.02)';
+    const p=ctr/maxCtr;
+    return p>.8?'rgba(134,33,254,.4)':p>.6?'rgba(134,33,254,.25)':p>.4?'rgba(134,33,254,.14)':p>.2?'rgba(134,33,254,.07)':'rgba(255,255,255,.03)';
+  }
+  function heatTxt(ctr){
+    if(!ctr||maxCtr===0)return'rgba(255,255,255,.2)';
+    return ctr/maxCtr>.6?'#fff':'rgba(255,255,255,.65)';
+  }
+
+  // Colunas: age × gender
+  const cols=ageOrder.flatMap(age=>genders.map(g=>({age,g,label:`${age}\n${g==='female'?'👩':'👨'}`})));
+
+  const gColors={female:'#ec4899',male:'#34c3f0'};
+
+  // Header duplo: faixa etária (span 2) + gênero
+  const ageHeaders=ageOrder.map(age=>`<th colspan="2" style="text-align:center;padding:5px 4px;font-size:9px;font-weight:600;color:rgba(255,255,255,.6);border-bottom:1px solid rgba(255,255,255,.08);white-space:nowrap">${age}</th>`).join('');
+  const gHeaders=ageOrder.flatMap(()=>genders.map(g=>`<th style="text-align:center;padding:4px 3px;font-size:9px;color:${gColors[g]};font-weight:500;border-bottom:1px solid ${gColors[g]}33">${g==='female'?'👩 F':'👨 M'}</th>`)).join('');
+
+  const rows=ads.map(ad=>{
+    const truncAd=ad.length>32?ad.substring(0,32)+'…':ad;
+    const cells=ageOrder.flatMap(age=>genders.map(g=>{
+      const d=matrix[ad][`${age}_${g}`];
+      const ctr=d&&d.impr>0?d.clicks/d.impr*100:0;
+      const bg=heatBg(ctr);
+      const txt=heatTxt(ctr);
+      const isBest=ctr>0&&ctr===maxCtr;
+      if(!d||(!d.clicks&&!d.impr)){
+        return`<td style="padding:5px 4px;text-align:center;background:rgba(255,255,255,.02);font-size:9px;color:rgba(255,255,255,.15)">—</td>`;
+      }
+      return`<td style="padding:5px 4px;text-align:center;background:${bg};border-radius:3px" title="${ad} · ${age} · ${g==='female'?'Feminino':'Masculino'}: CTR ${fmtP(ctr)}, ${fmt(d.clicks)} cliques${d.convs>0?', '+d.convs+' conv.':''}">
+        <div style="font-size:10px;font-weight:${isBest?700:500};color:${txt}">${fmtP(ctr)}${isBest?' ★':''}</div>
+        <div style="font-size:8px;color:rgba(255,255,255,.4)">${fmt(d.clicks)} cl</div>
+        ${d.convs>0?`<div style="font-size:8px;color:#4ade80;font-weight:600">${d.convs}↗</div>`:''}
+      </td>`;
+    })).join('');
+    return`<tr style="border-bottom:1px solid rgba(255,255,255,.04)">
+      <td style="padding:7px 10px;white-space:nowrap;max-width:200px;overflow:hidden;text-overflow:ellipsis;font-size:11px;font-weight:500;color:rgba(255,255,255,.85)">${truncAd}</td>
+      ${cells}
+    </tr>`;
+  }).join('');
+
+  el.innerHTML=`
+    <style>
+    #creative-audience-matrix table{width:100%;border-collapse:separate;border-spacing:2px;font-size:11px}
+    #creative-audience-matrix th{background:transparent}
+    #creative-audience-matrix tr:hover td{filter:brightness(1.2)}
+    </style>
+    <table>
+      <thead>
+        <tr><th style="text-align:left;padding:5px 10px;font-size:9px;color:var(--muted)">Anúncio</th>${ageHeaders}</tr>
+        <tr><th></th>${gHeaders}</tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <div style="display:flex;align-items:center;gap:12px;margin-top:10px;flex-wrap:wrap">
+      ${['rgba(255,255,255,.03)','rgba(134,33,254,.07)','rgba(134,33,254,.14)','rgba(134,33,254,.25)','rgba(134,33,254,.4)'].map((c,i)=>`<span style="display:flex;align-items:center;gap:3px;font-size:9px;color:var(--muted)"><span style="width:12px;height:12px;background:${c};border:1px solid rgba(255,255,255,.1);border-radius:2px;display:inline-block"></span>${['Sem dados','Baixo','Médio','Alto','★ Top'][i]}</span>`).join('')}
+      <span style="font-size:9px;color:var(--muted);margin-left:4px">Células: CTR · cliques · ↗ conversas | ★ = melhor CTR da conta</span>
+    </div>`;
 }
 
 function safeV(id){return parseFloat(document.getElementById(id)?.value)||0}
