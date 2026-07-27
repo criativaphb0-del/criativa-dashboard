@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -294,6 +295,52 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--white);fo
 .alert{border-radius:var(--radius-sm);padding:9px 12px;font-size:11px;line-height:1.5;margin-bottom:.9rem;display:flex;gap:7px;align-items:flex-start}
 .alert-info{background:rgba(52,195,240,.07);border:1px solid rgba(52,195,240,.18);color:rgba(52,195,240,.85)}
 
+/* ── MODO CLIENTE ─── */
+body.client-mode .sidebar{display:none}
+body.client-mode .btn-gestora-only{display:none!important}
+body.client-mode #rb{display:none!important}
+body.client-mode .sb-toggle-btn{display:none!important}
+
+/* ── BOTÕES AÇÃO TOPBAR ─── */
+.btn-action{display:flex;align-items:center;gap:5px;padding:6px 11px;border-radius:var(--radius-sm);font-size:11px;font-weight:600;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:opacity .15s;white-space:nowrap}
+.btn-action:hover{opacity:.85}
+.btn-action svg{width:12px;height:12px;flex-shrink:0}
+.btn-pdf{background:#dc2626;color:#fff}
+.btn-link{background:#059669;color:#fff}
+.btn-view-toggle{background:var(--bg3);color:var(--white);border:1px solid var(--border2)}
+
+/* ── MODAL ─── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:500;display:flex;align-items:center;justify-content:center;padding:1.5rem;backdrop-filter:blur(6px)}
+.modal-box{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:2rem;max-width:540px;width:100%}
+.modal-title{font-family:'Cardo',serif;font-size:20px;margin-bottom:.35rem}
+.modal-sub{font-size:12px;color:var(--muted);margin-bottom:1.5rem;line-height:1.6}
+.modal-label{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:6px;display:block}
+.link-box{display:flex;gap:8px}
+.link-input{flex:1;padding:9px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--white);font-size:11px;font-family:'DM Sans',sans-serif}
+.btn-copy{padding:9px 14px;background:var(--p);color:#fff;border:none;border-radius:var(--radius-sm);font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;transition:opacity .15s}
+.btn-copy:hover{opacity:.85}
+.modal-note{background:rgba(52,195,240,.07);border:1px solid rgba(52,195,240,.18);border-radius:var(--radius-sm);padding:10px 13px;font-size:11px;color:rgba(52,195,240,.85);line-height:1.5;margin:1rem 0}
+.btn-modal-close{width:100%;padding:10px;background:transparent;border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--muted);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;margin-top:.75rem}
+.btn-modal-close:hover{border-color:var(--white);color:var(--white)}
+.acc-link-list{display:flex;flex-direction:column;gap:5px;max-height:240px;overflow-y:auto;margin-bottom:.75rem}
+.acc-link-item{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--bg3);border-radius:var(--radius-sm);border:1px solid var(--border)}
+.acc-link-av{width:22px;height:22px;border-radius:50%;font-size:9px;font-weight:600;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0}
+.acc-link-name{flex:1;font-size:11px;font-weight:500}
+.acc-link-niche{font-size:9px;color:var(--muted)}
+.btn-acc-copy{font-size:10px;color:var(--p3);cursor:pointer;padding:3px 8px;border:1px solid rgba(134,33,254,.3);border-radius:4px;background:rgba(134,33,254,.08);white-space:nowrap;font-family:'DM Sans',sans-serif;transition:background .15s}
+.btn-acc-copy:hover{background:rgba(134,33,254,.2)}
+
+/* ── PRINT / PDF ─── */
+@media print{
+  body{background:#fff!important;color:#000!important}
+  .sidebar,.topbar,.dash-footer,.period-picker,#map-tooltip,.modal-overlay,.btn-action{display:none!important}
+  .main{width:100%!important}
+  .content{padding:.5rem}
+  :root{--bg:#fff;--bg2:#f9f9f9;--bg3:#f0f0f0;--border:rgba(0,0,0,.1);--border2:rgba(0,0,0,.15);--white:#111;--muted:rgba(0,0,0,.5);--muted2:rgba(0,0,0,.3)}
+  .card,.hero-card,.cross-card,.fin-card{break-inside:avoid;border:1px solid #ddd!important}
+  .grid-2,.grid-3,.grid-12,.grid-21,.hero-strip,.fin-grid,.cross-grid{break-inside:avoid}
+}
+
 /* ── TOAST ─── */
 .toast{position:fixed;bottom:1.25rem;right:1.25rem;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:9px 14px;font-size:11px;color:var(--white);opacity:0;transform:translateY(6px);transition:all .25s;pointer-events:none;z-index:998}
 .toast.show{opacity:1;transform:translateY(0)}
@@ -369,6 +416,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--white);fo
         </div>
       </div>
       <div class="tb-right">
+        <button class="btn-action btn-view-toggle btn-gestora-only" id="btn-toggle-mode" onclick="toggleClientMode()" title="Alternar modo cliente/gestora">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          Modo cliente
+        </button>
         <div class="period-picker" id="period-picker">
           <div class="period-trigger" onclick="togglePeriodPicker()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
@@ -410,6 +461,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--white);fo
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
           Atualizar
         </button>
+        <button class="btn-action btn-link btn-gestora-only" onclick="openShareModal()" title="Gerar link do cliente">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          Link cliente
+        </button>
+        <button class="btn-action btn-pdf" onclick="gerarPDF()" title="Gerar PDF do relatório">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          PDF
+        </button>
       </div>
     </div>
 
@@ -425,6 +484,25 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--white);fo
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- MODAL COMPARTILHAR -->
+<div class="modal-overlay" id="share-modal" style="display:none" onclick="if(event.target===this)closeShareModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-title">🔗 Links dos clientes</div>
+    <div class="modal-sub">Cada link abre o dashboard direto na conta do cliente, sem acesso às outras contas ou configurações. Basta copiar e enviar pelo WhatsApp ou e-mail.</div>
+    <div class="modal-note">
+      ℹ️ O cliente precisará ter o token Meta salvo no navegador dele para ver os dados ao vivo. Para uma visualização sem token, use o PDF.
+    </div>
+    <span class="modal-label">Copiar link por cliente</span>
+    <div class="acc-link-list" id="acc-link-list"></div>
+    <span class="modal-label" style="margin-top:.5rem">Link da conta atual</span>
+    <div class="link-box" style="margin-bottom:.75rem">
+      <input class="link-input" id="current-link-input" readonly value="">
+      <button class="btn-copy" onclick="copyLink('current-link-input')">Copiar</button>
+    </div>
+    <button class="btn-modal-close" onclick="closeShareModal()">Fechar</button>
+  </div>
+</div>
 
 <script>
 
@@ -524,6 +602,136 @@ function toggleSidebar(){
   try{localStorage.setItem('cri4_sb_collapsed',sb.classList.contains('collapsed')?'1':'')}catch(e){}
 }
 
+// ── MODO CLIENTE via URL param ──
+let IS_CLIENT_MODE=false;
+
+function checkURLParam(){
+  const params=new URLSearchParams(window.location.search);
+  const contaParam=params.get('conta');
+  if(contaParam){
+    // Modo cliente — achar conta pelo slug
+    const idx=ACCOUNTS.findIndex(a=>slugify(a.name)===contaParam||a.id===contaParam);
+    if(idx>=0){
+      IS_CLIENT_MODE=true;
+      document.body.classList.add('client-mode');
+      curAcc=ACCOUNTS[idx];
+      updatePill();
+      // Esconde setup se tiver token salvo
+      const t=localStorage.getItem('cri4_token');
+      if(t&&t.length>20){
+        TOKEN=t;
+        document.getElementById('setup').style.display='none';
+        document.getElementById('app').style.display='flex';
+        fetchAll();
+      } else {
+        // Mostrar setup simplificado apenas com token Meta
+        document.getElementById('setup').style.display='flex';
+      }
+    }
+  }
+}
+
+function slugify(str){
+  return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+}
+
+function getClientLink(acc){
+  const base=window.location.origin+window.location.pathname;
+  return`${base}?conta=${slugify(acc.name)}`;
+}
+
+// ── TOGGLE MODO CLIENTE ──
+function toggleClientMode(){
+  IS_CLIENT_MODE=!IS_CLIENT_MODE;
+  document.body.classList.toggle('client-mode',IS_CLIENT_MODE);
+  const btn=document.getElementById('btn-toggle-mode');
+  if(btn){
+    btn.textContent=IS_CLIENT_MODE?'👁 Modo gestora':'👁 Modo cliente';
+    btn.style.background=IS_CLIENT_MODE?'rgba(52,195,240,.15)':'var(--bg3)';
+    btn.style.color=IS_CLIENT_MODE?'var(--b)':'var(--white)';
+    btn.style.borderColor=IS_CLIENT_MODE?'var(--b)':'var(--border2)';
+  }
+}
+
+// ── MODAL COMPARTILHAR ──
+function openShareModal(){
+  if(!curAcc){toast('Selecione uma conta primeiro.','err');return;}
+  const modal=document.getElementById('share-modal');
+  const listEl=document.getElementById('acc-link-list');
+  const curInput=document.getElementById('current-link-input');
+
+  // Link da conta atual
+  curInput.value=getClientLink(curAcc);
+
+  // Lista de todas as contas
+  listEl.innerHTML=ACCOUNTS.map(a=>`
+    <div class="acc-link-item">
+      <div class="acc-link-av" style="background:${a.color}">${a.i}</div>
+      <div style="flex:1">
+        <div class="acc-link-name">${a.name}</div>
+        <div class="acc-link-niche">${a.niche}</div>
+      </div>
+      <button class="btn-acc-copy" onclick="copyText('${getClientLink(a)}',this)">Copiar link</button>
+    </div>`).join('');
+
+  modal.style.display='flex';
+}
+
+function closeShareModal(){
+  document.getElementById('share-modal').style.display='none';
+}
+
+function copyLink(inputId){
+  const el=document.getElementById(inputId);
+  if(!el)return;
+  navigator.clipboard.writeText(el.value).then(()=>toast('Link copiado ✓','ok')).catch(()=>{el.select();document.execCommand('copy');toast('Link copiado ✓','ok');});
+}
+
+function copyText(text,btn){
+  navigator.clipboard.writeText(text).then(()=>{
+    if(btn){const orig=btn.textContent;btn.textContent='✓ Copiado';setTimeout(()=>btn.textContent=orig,2000);}
+    toast('Link copiado ✓','ok');
+  }).catch(()=>toast('Erro ao copiar.','err'));
+}
+
+// ── GERAR PDF ──
+async function gerarPDF(){
+  if(!curAcc){toast('Selecione uma conta primeiro.','err');return;}
+  toast('Gerando PDF...','');
+
+  const content=document.getElementById('content');
+  if(!content){toast('Sem conteúdo para exportar.','err');return;}
+
+  const nomePeriodo=curPeriodLabel||'Período';
+  const nomeArquivo=`Relatorio_${slugify(curAcc.name)}_${nomePeriodo.replace(/[^a-zA-Z0-9]/g,'-')}.pdf`;
+
+  // Esconder elementos que não devem ir no PDF
+  const toHide=['brazil-map-wrap','strategy-funnel','creative-audience-matrix'];
+  const hidden=[];
+  toHide.forEach(id=>{
+    const el=document.getElementById(id);
+    if(el&&el.style.display!=='none'){hidden.push({el,prev:el.style.display});el.style.display='none';}
+  });
+
+  const opt={
+    margin:[10,8,10,8],
+    filename:nomeArquivo,
+    image:{type:'jpeg',quality:0.92},
+    html2canvas:{scale:1.5,useCORS:true,backgroundColor:'#0a0a0a'},
+    jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
+    pagebreak:{mode:['avoid-all','css']},
+  };
+
+  try{
+    await html2pdf().set(opt).from(content).save();
+    toast('PDF gerado ✓','ok');
+  }catch(e){
+    toast('Erro ao gerar PDF.','err');
+  }finally{
+    hidden.forEach(({el,prev})=>el.style.display=prev);
+  }
+}
+
 // ── BOOT ──
 function boot(){
   const t=document.getElementById('tk').value.trim();
@@ -537,13 +745,35 @@ function boot(){
 }
 function resetToken(){try{localStorage.removeItem('cri4_token')}catch(e){}TOKEN='';curAcc=null;document.getElementById('app').style.display='none';document.getElementById('setup').style.display='flex';document.getElementById('tk').value=''}
 window.addEventListener('DOMContentLoaded',()=>{
+  // Verificar se é acesso via link de cliente
+  const params=new URLSearchParams(window.location.search);
+  const contaParam=params.get('conta');
+
   const t=localStorage.getItem('cri4_token');
-  if(t&&t.length>20){TOKEN=t;document.getElementById('setup').style.display='none';document.getElementById('app').style.display='flex';buildSidebar()}
+  if(t&&t.length>20){
+    TOKEN=t;
+    document.getElementById('setup').style.display='none';
+    document.getElementById('app').style.display='flex';
+    buildSidebar();
+    // Se veio com param de conta, selecionar automaticamente
+    if(contaParam){
+      const idx=ACCOUNTS.findIndex(a=>slugify(a.name)===contaParam||a.id===contaParam);
+      if(idx>=0){
+        IS_CLIENT_MODE=true;
+        document.body.classList.add('client-mode');
+        selectAcc(idx);
+      }
+    }
+  } else if(contaParam){
+    // Sem token mas com param — mostrar setup informando que precisa do token Meta
+    document.getElementById('setup').style.display='flex';
+  }
+
   // restaurar estado do sidebar
-  if(localStorage.getItem('cri4_sb_collapsed')==='1'){
+  if(!contaParam&&localStorage.getItem('cri4_sb_collapsed')==='1'){
     const sb=document.getElementById('sidebar');
     const btn=document.getElementById('sb-toggle-btn');
-    if(sb){sb.classList.add('collapsed');if(btn)btn.textContent='›'}
+    if(sb){sb.classList.add('collapsed');if(btn)btn.textContent='›';}
   }
 });
 
