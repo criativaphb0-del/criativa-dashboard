@@ -295,7 +295,103 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--white);fo
 .alert{border-radius:var(--radius-sm);padding:9px 12px;font-size:11px;line-height:1.5;margin-bottom:.9rem;display:flex;gap:7px;align-items:flex-start}
 .alert-info{background:rgba(52,195,240,.07);border:1px solid rgba(52,195,240,.18);color:rgba(52,195,240,.85)}
 
-/* ── MODO CLIENTE ─── */
+/* ── ABAS PRINCIPAIS ─── */
+.main-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);background:var(--bg2);padding:0 1.5rem}
+.main-tab{padding:11px 18px;font-size:12px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.main-tab:hover{color:var(--white)}
+.main-tab.active{color:var(--white);border-bottom-color:var(--p)}
+.main-tab svg{width:13px;height:13px}
+
+/* ── MODO RECONHECIMENTO ─── */
+.mode-toggle-wrap{display:flex;align-items:center;gap:8px;margin-bottom:1.25rem;flex-wrap:wrap}
+.mode-toggle-label{font-size:11px;color:var(--muted)}
+.mode-pills{display:flex;background:var(--bg3);border:1px solid var(--border2);border-radius:100px;padding:3px;gap:3px}
+.mode-pill{padding:5px 14px;border-radius:100px;font-size:11px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;transition:all .15s;white-space:nowrap}
+.mode-pill.active{background:var(--p);color:#fff}
+.mode-pill.active-ind{background:var(--b);color:var(--bg)}
+
+/* ── CARD META INDEPENDENTE ─── */
+.rec-hero{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:1.25rem}
+.rec-kpi{border-radius:var(--radius);padding:1rem;position:relative;overflow:hidden}
+.rec-kpi::before{content:'';position:absolute;top:-20px;right:-15px;width:70px;height:70px;border-radius:50%;opacity:.1;background:currentColor}
+
+/* ── ENGAJAMENTO BREAKDOWN ─── */
+.eng-breakdown{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:7px;margin-bottom:1.25rem}
+.eng-item{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.75rem;text-align:center}
+.eng-item-icon{font-size:18px;margin-bottom:4px}
+.eng-item-val{font-size:16px;font-weight:700}
+.eng-item-lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+
+/* ── AQUECIMENTO ─── */
+.aquec-note{background:rgba(134,33,254,.07);border:1px solid rgba(134,33,254,.2);border-radius:var(--radius-sm);padding:10px 14px;font-size:12px;color:rgba(134,33,254,.9);margin-bottom:1.25rem;display:flex;gap:8px;align-items:flex-start}
+.ind-note{background:rgba(52,195,240,.07);border:1px solid rgba(52,195,240,.2);border-radius:var(--radius-sm);padding:10px 14px;font-size:12px;color:rgba(52,195,240,.9);margin-bottom:1.25rem;display:flex;gap:8px;align-items:flex-start}
+
+/* ── CAMPO META CAMPANHA ─── */
+.camp-meta-card{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:1rem 1.25rem;margin-bottom:1.25rem}
+.camp-meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:.75rem}
+
+/* ── MAPA DESTAQUE ─── */
+.map-destaque{border:2px solid rgba(52,195,240,.3);border-radius:var(--radius)}
+
+/* ── PROGRESS ALCANCE ─── */
+.alcance-progress{margin-bottom:1.25rem}
+.ap-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.ap-pct{font-size:28px;font-weight:700;color:var(--b2)}
+.ap-meta{font-size:11px;color:var(--muted)}
+.ap-bar{height:10px;background:rgba(255,255,255,.06);border-radius:5px;overflow:hidden;margin-bottom:4px}
+.ap-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--p),var(--b));transition:width .6s}
+.ap-labels{display:flex;justify-content:space-between;font-size:9px;color:var(--muted)}
+
+/* ── ABAS DE MÓDULO ─── */
+.module-tabs{display:flex;gap:0;background:var(--bg3);border-radius:var(--radius-sm);border:1px solid var(--border2);overflow:hidden;flex-shrink:0}
+.module-tab{padding:6px 16px;border:none;background:transparent;color:var(--muted);font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;white-space:nowrap;display:flex;align-items:center;gap:5px;border-bottom:2px solid transparent}
+.module-tab:hover{color:var(--white)}
+.module-tab.active{background:rgba(255,255,255,.04);color:var(--white)}
+.module-tab.active.tab-conv{border-bottom-color:var(--p);color:var(--p3)}
+.module-tab.active.tab-rec{border-bottom-color:var(--b);color:var(--b2)}
+.module-tab svg{width:12px;height:12px;flex-shrink:0}
+.campaign-mode-bar{display:flex;align-items:center;gap:8px;margin-bottom:1.25rem;flex-wrap:wrap}
+.campaign-mode-bar>span{font-size:11px;color:var(--muted)}
+.mode-opts{display:flex;gap:3px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:3px}
+.mode-opt{padding:5px 14px;border:none;background:transparent;border-radius:var(--radius-sm);color:var(--muted);font-size:11px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;white-space:nowrap}
+.mode-opt:hover{color:var(--white)}
+.mode-opt.opt-warm.active{background:rgba(134,33,254,.25);color:var(--p3);font-weight:600}
+.mode-opt.opt-ind.active{background:rgba(52,195,240,.2);color:var(--b2);font-weight:600}
+.goal-bar{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:.9rem 1.1rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.goal-field{display:flex;flex-direction:column;gap:3px;flex:1;min-width:150px}
+.goal-field label{font-size:9px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted)}
+.goal-field input{padding:6px 10px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px}
+.goal-field input:focus{outline:none;border-color:var(--b)}
+.goal-progress{flex:2;min-width:180px}
+.goal-progress-lbl{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:4px}
+.goal-progress-bar{height:8px;background:rgba(255,255,255,.07);border-radius:4px;overflow:hidden}
+.goal-progress-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--b),var(--p));transition:width .5s}
+.eng-kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:1.25rem}
+.eng-kpi{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:.9rem}
+.eng-kpi.hl-blue{background:rgba(52,195,240,.07);border-color:rgba(52,195,240,.25)}
+.eng-kpi.hl-purple{background:rgba(134,33,254,.07);border-color:rgba(134,33,254,.25)}
+.eng-kpi.hl-green{background:rgba(34,197,94,.07);border-color:rgba(34,197,94,.25)}
+.eng-kpi.hl-amber{background:rgba(245,158,11,.07);border-color:rgba(245,158,11,.25)}
+.eng-kpi.hl-pink{background:rgba(236,72,153,.07);border-color:rgba(236,72,153,.25)}
+.eng-kpi-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:5px}
+.eng-kpi-val{font-size:22px;font-weight:600;line-height:1}
+.eng-kpi-sub{font-size:10px;color:var(--muted);margin-top:3px}
+.fmt-eng-list{display:flex;flex-direction:column;gap:7px}
+.fmt-eng-row{display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--bg3);border-radius:var(--radius-sm)}
+.fmt-eng-icon{font-size:16px;flex-shrink:0}
+.fmt-eng-info{flex:1}
+.fmt-eng-name{font-size:11px;font-weight:600;margin-bottom:3px}
+.fmt-eng-bar-wrap{height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;margin-bottom:3px}
+.fmt-eng-bar{height:100%;border-radius:3px}
+.fmt-eng-stats{display:flex;gap:10px;font-size:10px;color:var(--muted)}
+.fmt-eng-stats strong{color:var(--white)}
+.af-step{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.af-lbl{font-size:10px;color:var(--muted);width:130px;text-align:right;flex-shrink:0}
+.af-track{flex:1;height:26px;background:rgba(255,255,255,.04);border-radius:4px;overflow:hidden}
+.af-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding:0 10px;font-size:10px;font-weight:600;color:#fff;transition:width .6s}
+.af-num{font-size:10px;color:var(--muted);width:50px;flex-shrink:0}
+.af-pct{font-size:9px;color:var(--muted);width:38px;text-align:right;flex-shrink:0}
+
 body.client-mode .sidebar{display:none}
 body.client-mode .btn-gestora-only{display:none!important}
 body.client-mode #rb{display:none!important}
@@ -414,6 +510,16 @@ body.client-mode .sb-toggle-btn{display:none!important}
           <div class="cp-av" id="pill-av">—</div>
           <span class="cp-nm" id="pill-nm">Selecione uma conta</span>
         </div>
+        <div class="module-tabs">
+          <button class="module-tab tab-conv active" id="tab-conv" onclick="switchModule('conv')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Conversão & Mensagens
+          </button>
+          <button class="module-tab tab-rec" id="tab-rec" onclick="switchModule('rec')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg>
+            Reconhecimento & Engajamento
+          </button>
+        </div>
       </div>
       <div class="tb-right">
         <button class="btn-action btn-view-toggle btn-gestora-only" id="btn-toggle-mode" onclick="toggleClientMode()" title="Alternar modo cliente/gestora">
@@ -457,11 +563,11 @@ body.client-mode .sb-toggle-btn{display:none!important}
             </div>
           </div>
         </div>
-        <button class="btn-refresh" id="rb" onclick="fetchAll()">
+        <button class="btn-refresh" id="rb" onclick="curModule==='rec'?fetchRec():fetchAll()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
           Atualizar
         </button>
-        <button class="btn-action btn-link btn-gestora-only" onclick="openShareModal()" title="Gerar link do cliente">
+        <button class="btn-action btn-link btn-gestora-only" onclick="showShareModal()" title="Gerar link do cliente">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
           Link cliente
         </button>
@@ -472,9 +578,24 @@ body.client-mode .sb-toggle-btn{display:none!important}
       </div>
     </div>
 
+    <!-- ABAS PRINCIPAIS -->
+    <div class="main-tabs" id="main-tabs" style="display:none">
+      <button class="main-tab active" id="tab-conversao" onclick="switchMainTab('conversao')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        Conversão & Mensagens
+      </button>
+      <button class="main-tab" id="tab-reconhecimento" onclick="switchMainTab('reconhecimento')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg>
+        Reconhecimento & Engajamento
+      </button>
+    </div>
+
     <div class="content" id="content">
       <div style="text-align:center;padding:4rem;color:var(--muted);font-size:13px">Selecione uma conta na barra lateral.</div>
     </div>
+
+    <!-- CONTEÚDO RECONHECIMENTO -->
+    <div id="content-rec" style="display:none;padding:1.5rem"></div>
 
     <div class="dash-footer">
       <span id="footer-txt">—</span>
@@ -488,18 +609,17 @@ body.client-mode .sb-toggle-btn{display:none!important}
 <!-- MODAL COMPARTILHAR -->
 <div class="modal-overlay" id="share-modal" style="display:none" onclick="if(event.target===this)closeShareModal()">
   <div class="modal-box" onclick="event.stopPropagation()">
-    <div class="modal-title">🔗 Links dos clientes</div>
-    <div class="modal-sub">Cada link abre o dashboard direto na conta do cliente, sem acesso às outras contas ou configurações. Basta copiar e enviar pelo WhatsApp ou e-mail.</div>
+    <div class="modal-title">🔗 Link do cliente</div>
+    <div class="modal-sub">Os dados atuais da conta são salvos na nuvem e o cliente acessa com um link direto — sem precisar de token ou login.</div>
     <div class="modal-note">
-      ℹ️ O cliente precisará ter o token Meta salvo no navegador dele para ver os dados ao vivo. Para uma visualização sem token, use o PDF.
+      ✅ O cliente abre o link e vê o dashboard no modo cliente automaticamente, com os dados do período selecionado.
     </div>
-    <span class="modal-label">Copiar link por cliente</span>
-    <div class="acc-link-list" id="acc-link-list"></div>
-    <span class="modal-label" style="margin-top:.5rem">Link da conta atual</span>
-    <div class="link-box" style="margin-bottom:.75rem">
-      <input class="link-input" id="current-link-input" readonly value="">
+    <span class="modal-label">Link gerado para <strong id="modal-acc-name">—</strong></span>
+    <div class="link-box" style="margin-bottom:.75rem;margin-top:.4rem">
+      <input class="link-input" id="current-link-input" readonly value="Clique em Gerar link →">
       <button class="btn-copy" onclick="copyLink('current-link-input')">Copiar</button>
     </div>
+    <button class="btn-main" id="btn-gerar-link" onclick="openShareModal()" style="margin-top:0;margin-bottom:.75rem">🔄 Gerar / Atualizar link</button>
     <button class="btn-modal-close" onclick="closeShareModal()">Fechar</button>
   </div>
 </div>
@@ -512,35 +632,41 @@ const GIST_ID = '46a0fea910f1006dde3f1723989d6c83';
 const REPO_NAME    = 'criativa-dashboard';
 
 const ACCOUNTS=[
-  {id:'394614132727667',name:'Born',niche:'Acessórios',color:'#7C3AED',i:'BN'},
-  {id:'752295403194477',name:'JO Gestão de Tráfego',niche:'Agência',color:'#8621fe',i:'JO'},
-  {id:'164150356513460',name:'Lyanna Carvalho',niche:'Fisioterapia',color:'#DB2777',i:'LC'},
-  {id:'2814037308738039',name:'Jotão Acessórios',niche:'Varejo',color:'#D97706',i:'JT'},
-  {id:'796394405359609',name:'Imobiliária Ideal',niche:'Imóveis',color:'#0891B2',i:'II'},
-  {id:'292146506754941',name:'Clínica Neofísio',niche:'Pilates',color:'#059669',i:'NF'},
-  {id:'679199834027556',name:'Gaya Bolsas',niche:'Varejo',color:'#BE185D',i:'GB'},
-  {id:'941046470880398',name:'Clairde Carvalho 2',niche:'Estética',color:'#7C3AED',i:'CC'},
-  {id:'1003022001375450',name:'Chalé Rubi',niche:'Turismo',color:'#F59E0B',i:'CR'},
-  {id:'1207022357196292',name:'Grupo Summer',niche:'Turismo',color:'#F59E0B',i:'GS'},
-  {id:'1002094058343214',name:'Iguatemi 2',niche:'Varejo',color:'#0891B2',i:'I2'},
-  {id:'1741015949967870',name:'Pacas Suítes',niche:'Turismo',color:'#D97706',i:'PS'},
-  {id:'1083272963177780',name:'eLav Parnaíba',niche:'Lavanderia',color:'#2563EB',i:'EL'},
-  {id:'892996052774010',name:'Odonto Pro+',niche:'Odontologia',color:'#0891B2',i:'OP'},
-  {id:'1357272135233296',name:'Iguatemi',niche:'Varejo',color:'#0891B2',i:'IG'},
-  {id:'1878960766266737',name:'Mama Mia',niche:'Gastronomia',color:'#DC2626',i:'MM'},
-  {id:'994829009220469',name:'Pequeno Gênio',niche:'Educação',color:'#7C3AED',i:'PG'},
-  {id:'1108918757485066',name:'Pousada Don Ruan',niche:'Turismo',color:'#059669',i:'DR'},
-  {id:'1274541413609716',name:'Clínica HOF',niche:'Estética',color:'#DB2777',i:'HF'},
-  {id:'736704875561234',name:'Bambu',niche:'Gastronomia',color:'#DC2626',i:'BM'},
-  {id:'1461658814737853',name:'Sunset Prime',niche:'Gastronomia',color:'#F59E0B',i:'SP'},
-  {id:'832235916029421',name:'Ravel Zeno',niche:'Geral',color:'#6B7280',i:'RZ'},
-  {id:'1818328932217005',name:'Chalé Dunas Atins',niche:'Turismo',color:'#F59E0B',i:'DA'},
-  {id:'26743331708595336',name:'Bambu Sushi',niche:'Gastronomia',color:'#DC2626',i:'BS'},
-  {id:'956833840054487',name:'MB Clinic Reserva',niche:'Estética',color:'#8621fe',i:'MB'},
-  {id:'942508258181826',name:'MB Academy',niche:'Educação',color:'#8621fe',i:'MA'},
-  {id:'1950560275591392',name:'Clínica Dra Rayanne',niche:'Saúde',color:'#DB2777',i:'RY'},
-  {id:'2396913074107820',name:'Consulta de Opnião',niche:'Geral',color:'#6B7280',i:'CO'},
-  {id:'1305367874878865',name:'Camila Santos Arq.',niche:'Arquitetura',color:'#0891B2',i:'CS'},
+  // ATIVAS E CONSULTÁVEIS
+  {id:'347923441912732', name:'Duda Teixeira',            niche:'Geral',        color:'#7C3AED', i:'DT'},
+  {id:'752295403194477', name:'JO Gestão de Tráfego',     niche:'Agência',      color:'#8621fe', i:'JO'},
+  {id:'164150356513460', name:'Lyanna Carvalho',           niche:'Fisioterapia', color:'#DB2777', i:'LC'},
+  {id:'2814037308738039',name:'Jotão Acessórios',          niche:'Varejo',       color:'#D97706', i:'JT'},
+  {id:'796394405359609', name:'Imobiliária Ideal',         niche:'Imóveis',      color:'#0891B2', i:'II'},
+  {id:'657396729644273', name:'Conta Pessoal JO',          niche:'Geral',        color:'#6B7280', i:'JP'},
+  {id:'292146506754941', name:'Clínica Neofísio',          niche:'Pilates',      color:'#059669', i:'NF'},
+  {id:'679199834027556', name:'Gaya Bolsas',               niche:'Varejo',       color:'#BE185D', i:'GB'},
+  {id:'376798235237470', name:'Future Energy Plus',        niche:'Energia',      color:'#0EA5E9', i:'FE'},
+  {id:'941046470880398', name:'Clairde Carvalho 2',        niche:'Estética',     color:'#7C3AED', i:'CC'},
+  {id:'1003282001375450',name:'CA Reserva Summer',         niche:'Turismo',      color:'#F59E0B', i:'RS'},
+  {id:'1741015949967870',name:'Pacas Suítes',              niche:'Turismo',      color:'#D97706', i:'PS'},
+  {id:'892996052774010', name:'Odonto Pro+',               niche:'Odontologia',  color:'#0891B2', i:'OP'},
+  {id:'1357272135233296',name:'Iguatemi',                  niche:'Varejo',       color:'#0891B2', i:'IG'},
+  {id:'1878960766266737',name:'Mama Mia',                  niche:'Gastronomia',  color:'#DC2626', i:'MM'},
+  {id:'1108918757485066',name:'Pousada Don Ruan',          niche:'Turismo',      color:'#059669', i:'DR'},
+  {id:'1274541413609716',name:'Clínica HOF',               niche:'Estética',     color:'#DB2777', i:'HF'},
+  {id:'736704875561234', name:'Bambu',                     niche:'Gastronomia',  color:'#DC2626', i:'BM'},
+  {id:'1461658814737853',name:'Sunset Prime',              niche:'Gastronomia',  color:'#F59E0B', i:'SP'},
+  {id:'1818328932217005',name:'Chalé Dunas Atins',         niche:'Turismo',      color:'#F59E0B', i:'DA'},
+  {id:'26743331708595336',name:'Bambu Sushi',              niche:'Gastronomia',  color:'#DC2626', i:'BS'},
+  {id:'956833840054487', name:'MB Clinic Reserva',         niche:'Estética',     color:'#8621fe', i:'MB'},
+  {id:'942508258181826', name:'MB Academy',                niche:'Educação',     color:'#8621fe', i:'MA'},
+  {id:'1950560275591392',name:'Clínica Dra Rayanne',       niche:'Saúde',        color:'#DB2777', i:'RY'},
+  {id:'2396913074107820',name:'CA Única',                  niche:'Geral',        color:'#6B7280', i:'UN'},
+  {id:'1305367874878865',name:'Camila Santos Arq.',        niche:'Arquitetura',  color:'#0891B2', i:'CS'},
+  {id:'2241111119999553',name:'Hilder Monção',             niche:'Política',     color:'#1D4ED8', i:'HM'},
+  {id:'1624562512566873',name:'Campanha Política Hilder',  niche:'Política',     color:'#1E40AF', i:'PH'},
+  // COM RESTRIÇÕES (mantidas para histórico)
+  {id:'787833676328561', name:'Criativa Tráfego Pago',     niche:'Agência',      color:'#4B5563', i:'CR', restrita:true},
+  {id:'256073423799970', name:'MB Clinic Principal',       niche:'Estética',     color:'#4B5563', i:'MBP',restrita:true},
+  {id:'961500323505704', name:'Hilder Monção Empresas',    niche:'Política',     color:'#4B5563', i:'HME',restrita:true},
+  {id:'1002094058343214',name:'Iguatemi 2',                niche:'Varejo',       color:'#4B5563', i:'I2', restrita:true},
+  {id:'7270919776335509',name:'Salão Benildes',            niche:'Beleza',       color:'#4B5563', i:'SB', restrita:true},
 ];
 
 let TOKEN='', curAcc=null, curPeriod='this_month', curPeriodLabel='Este mês', curCustomRange=null;
@@ -562,31 +688,72 @@ function loadManual(){try{const v=localStorage.getItem(DK(curAcc?.id,curPeriod))
 
 
 // ── GIST STORAGE ──
+const GH_TOKEN_KEY='cri4_gh_token';
+const GIST_ID_KEY='cri4_gist_id';
+const DEFAULT_GIST='46a0fea910f1006dde3f1723989d6c83';
+
+function getGHToken(){ return localStorage.getItem(GH_TOKEN_KEY)||''; }
+function getGistId(){ return localStorage.getItem(GIST_ID_KEY)||DEFAULT_GIST; }
+
 async function gistSave(key, value) {
-  const ghToken = localStorage.getItem('cri4_gh_token');
-  if (!ghToken) { saveLocalFallback(key, value); return; }
   try {
-    const res = await fetch('https://api.github.com/gists/' + GIST_ID, {
+    const gh=getGHToken();
+    await fetch('https://api.github.com/gists/' + getGistId(), {
       method: 'PATCH',
-      headers: { 'Authorization': 'Bearer ' + ghToken, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
+      headers: { 'Authorization': 'Bearer ' + gh, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
       body: JSON.stringify({ files: { ['cri4_' + key + '.json']: { content: JSON.stringify(value) } } })
     });
-    if (!res.ok) saveLocalFallback(key, value);
-  } catch(e) { saveLocalFallback(key, value); }
+  } catch(e) {}
 }
 
 async function gistLoad(key) {
-  const ghToken = localStorage.getItem('cri4_gh_token');
-  if (!ghToken) return loadLocalFallback(key);
+  const gh=getGHToken();
+  if(!gh) return null;
   try {
-    const res = await fetch('https://api.github.com/gists/' + GIST_ID, {
-      headers: { 'Authorization': 'Bearer ' + ghToken, 'Accept': 'application/vnd.github+json' }
+    const res = await fetch('https://api.github.com/gists/' + getGistId(), {
+      headers: { 'Authorization': 'Bearer ' + gh, 'Accept': 'application/vnd.github+json' }
     });
     const data = await res.json();
     const file = data.files?.['cri4_' + key + '.json'];
     if (file?.content) return JSON.parse(file.content);
   } catch(e) {}
-  return loadLocalFallback(key);
+  return null;
+}
+
+// Salvar snapshot completo da conta para link do cliente
+async function saveClientSnapshot(){
+  const gh=getGHToken();
+  if(!curAcc||!STATE.account||!gh) return null;
+  const snapKey=`snap_${curAcc.id}_${curPeriod}`;
+  const snapshot={
+    acc: curAcc, period: curPeriod, periodLabel: curPeriodLabel,
+    gerado: new Date().toISOString(),
+    state:{ account:STATE.account, age:STATE.age, platform:STATE.platform, creatives:STATE.creatives, regions:STATE.regions },
+    manual: loadManual(),
+  };
+  try {
+    const res=await fetch('https://api.github.com/gists/' + getGistId(), {
+      method: 'PATCH',
+      headers: { 'Authorization': 'Bearer ' + gh, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ files: { [snapKey + '.json']: { content: JSON.stringify(snapshot) } } })
+    });
+    if(res.ok) return snapKey;
+  } catch(e) {}
+  return null;
+}
+
+async function loadClientSnapshot(snapKey){
+  const gh=getGHToken();
+  if(!gh) return null;
+  try {
+    const res=await fetch('https://api.github.com/gists/' + getGistId(), {
+      headers: { 'Authorization': 'Bearer ' + gh, 'Accept': 'application/vnd.github+json' }
+    });
+    const data=await res.json();
+    const file=data.files?.[snapKey + '.json'];
+    if(file?.content) return JSON.parse(file.content);
+  } catch(e) {}
+  return null;
 }
 
 function saveLocalFallback(key, value) { try { localStorage.setItem('cri4_' + key, JSON.stringify(value)); } catch(e) {} }
@@ -602,42 +769,11 @@ function toggleSidebar(){
   try{localStorage.setItem('cri4_sb_collapsed',sb.classList.contains('collapsed')?'1':'')}catch(e){}
 }
 
-// ── MODO CLIENTE via URL param ──
+// ── MODO CLIENTE ──
 let IS_CLIENT_MODE=false;
-
-function checkURLParam(){
-  const params=new URLSearchParams(window.location.search);
-  const contaParam=params.get('conta');
-  if(contaParam){
-    // Modo cliente — achar conta pelo slug
-    const idx=ACCOUNTS.findIndex(a=>slugify(a.name)===contaParam||a.id===contaParam);
-    if(idx>=0){
-      IS_CLIENT_MODE=true;
-      document.body.classList.add('client-mode');
-      curAcc=ACCOUNTS[idx];
-      updatePill();
-      // Esconde setup se tiver token salvo
-      const t=localStorage.getItem('cri4_token');
-      if(t&&t.length>20){
-        TOKEN=t;
-        document.getElementById('setup').style.display='none';
-        document.getElementById('app').style.display='flex';
-        fetchAll();
-      } else {
-        // Mostrar setup simplificado apenas com token Meta
-        document.getElementById('setup').style.display='flex';
-      }
-    }
-  }
-}
 
 function slugify(str){
   return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-}
-
-function getClientLink(acc){
-  const base=window.location.origin+window.location.pathname;
-  return`${base}?conta=${slugify(acc.name)}`;
 }
 
 // ── TOGGLE MODO CLIENTE ──
@@ -654,27 +790,42 @@ function toggleClientMode(){
 }
 
 // ── MODAL COMPARTILHAR ──
-function openShareModal(){
+function showShareModal(){
   if(!curAcc){toast('Selecione uma conta primeiro.','err');return;}
   const modal=document.getElementById('share-modal');
-  const listEl=document.getElementById('acc-link-list');
+  const nameEl=document.getElementById('modal-acc-name');
+  if(nameEl) nameEl.textContent=curAcc.name;
+  document.getElementById('current-link-input').value='Clique em "Gerar / Atualizar link" →';
+  modal.style.display='flex';
+}
+
+async function openShareModal(){
+  if(!curAcc){toast('Selecione uma conta primeiro.','err');return;}
+  if(!STATE.account){toast('Atualize os dados antes de gerar o link.','err');return;}
+
+  const modal=document.getElementById('share-modal');
   const curInput=document.getElementById('current-link-input');
-
-  // Link da conta atual
-  curInput.value=getClientLink(curAcc);
-
-  // Lista de todas as contas
-  listEl.innerHTML=ACCOUNTS.map(a=>`
-    <div class="acc-link-item">
-      <div class="acc-link-av" style="background:${a.color}">${a.i}</div>
-      <div style="flex:1">
-        <div class="acc-link-name">${a.name}</div>
-        <div class="acc-link-niche">${a.niche}</div>
-      </div>
-      <button class="btn-acc-copy" onclick="copyText('${getClientLink(a)}',this)">Copiar link</button>
-    </div>`).join('');
+  const btnGerar=document.getElementById('btn-gerar-link');
 
   modal.style.display='flex';
+  const nameEl=document.getElementById('modal-acc-name');
+  if(nameEl) nameEl.textContent=curAcc.name;
+  curInput.value='Salvando dados na nuvem...';
+  if(btnGerar){btnGerar.textContent='⏳ Salvando...';btnGerar.disabled=true;}
+
+  const snapKey=await saveClientSnapshot();
+  if(!snapKey){
+    curInput.value='Erro ao salvar. Verifique a conexão.';
+    toast('Erro ao salvar snapshot.','err');
+    if(btnGerar){btnGerar.textContent='🔄 Gerar / Atualizar link';btnGerar.disabled=false;}
+    return;
+  }
+
+  const base=window.location.origin+window.location.pathname;
+  const link=`${base}?cliente=${snapKey}`;
+  curInput.value=link;
+  if(btnGerar){btnGerar.textContent='🔄 Gerar / Atualizar link';btnGerar.disabled=false;}
+  toast('Link gerado ✓','ok');
 }
 
 function closeShareModal(){
@@ -696,40 +847,712 @@ function copyText(text,btn){
 
 // ── GERAR PDF ──
 async function gerarPDF(){
-  if(!curAcc){toast('Selecione uma conta primeiro.','err');return;}
-  toast('Gerando PDF...','');
+  if(!curAcc||!STATE.account){toast('Selecione uma conta e atualize os dados primeiro.','err');return;}
 
-  const content=document.getElementById('content');
-  if(!content){toast('Sem conteúdo para exportar.','err');return;}
+  const d=STATE.account;
+  const m=STATE.manual||loadManual();
+  const invest=parseFloat(d.spend)||0;
+  const reach=parseInt(d.reach)||0;
+  const impr=parseInt(d.impressions)||0;
+  const clicks=parseInt(d.clicks)||0;
+  const ctr=parseFloat(d.ctr)||0;
+  const cpm=parseFloat(d.cpm)||0;
+  const freq=parseFloat(d.frequency)||0;
+  const agend=parseFloat(m.agend)||0;
+  const comp=parseFloat(m.comp)||0;
+  const nocomp=parseFloat(m.nocomp)||0;
+  const fat=parseFloat(m.fat)||0;
+  const vendas=parseFloat(m.vendas)||0;
+  const followup=parseFloat(m.followup)||0;
+  let conv=0;if(d.actions){const a=d.actions.find(x=>x.action_type==='onsite_conversion.messaging_conversation_started_7d'||x.action_type==='messaging_first_reply');if(a)conv=parseInt(a.value)||0;}
+  let eng=0;if(d.actions){const a=d.actions.find(x=>x.action_type==='page_engagement');if(a)eng=parseInt(a.value)||0;}
+  let react=0;if(d.actions){const a=d.actions.find(x=>x.action_type==='post_reaction');if(a)react=parseInt(a.value)||0;}
 
-  const nomePeriodo=curPeriodLabel||'Período';
-  const nomeArquivo=`Relatorio_${slugify(curAcc.name)}_${nomePeriodo.replace(/[^a-zA-Z0-9]/g,'-')}.pdf`;
+  const leads=conv;
+  const cpl=leads>0?invest/leads:0;
+  const cpa=agend>0?invest/agend:0;
+  const cpv=vendas>0?invest/vendas:0;
+  const txAg=leads>0?agend/leads*100:0;
+  const txCo=agend>0?comp/agend*100:0;
+  const txVenda=comp>0?vendas/comp*100:0;
+  const roi=invest>0&&fat>0?(fat-invest)/invest*100:0;
+  const lucro=fat>0?fat-invest:0;
+  const ticket=vendas>0&&fat>0?fat/vendas:0;
+  const txEng=impr>0?eng/impr*100:0;
 
-  // Esconder elementos que não devem ir no PDF
-  const toHide=['brazil-map-wrap','strategy-funnel','creative-audience-matrix'];
-  const hidden=[];
-  toHide.forEach(id=>{
-    const el=document.getElementById(id);
-    if(el&&el.style.display!=='none'){hidden.push({el,prev:el.style.display});el.style.display='none';}
+  // Dados adicionais do STATE
+  const regions=STATE.regions||[];
+  const plats=STATE.platform||[];
+  const adsCopy=STATE.adsCopy||[];
+  const ageData=STATE.age||[];
+
+  // Renderizar tabela de anúncios
+  const fmtColors={IMAGE:'#34c3f0',VIDEO:'#8621fe',CAROUSEL:'#f59e0b',STORY:'#ec4899',REELS:'#22c55e'};
+  const fmtEmoji={IMAGE:'🖼️',VIDEO:'🎥',CAROUSEL:'🎠',STORY:'📱',REELS:'🎬'};
+  function detectFmt(ad){const n=(ad.name||'').toLowerCase();if(n.includes('reel'))return'REELS';if(n.includes('video')||n.includes('vídeo'))return'VIDEO';if(n.includes('carrossel')||n.includes('carousel'))return'CAROUSEL';if(n.includes('storie')||n.includes('story'))return'STORY';return'IMAGE';}
+  function tr(s,n){return s&&s!=='—'&&s.length>n?s.substring(0,n)+'…':(s||'—');}
+
+  const adsRows=adsCopy.filter(a=>a.insights?.data?.[0]&&parseFloat(a.insights.data[0].spend||0)>0)
+    .sort((a,b)=>parseFloat(b.insights.data[0].spend||0)-parseFloat(a.insights.data[0].spend||0))
+    .slice(0,8).map((ad,i)=>{
+      const ins=ad.insights.data[0];
+      const cr=ad.creative||{};const spec=cr.object_story_spec||{};
+      const title=cr.title||spec.link_data?.name||spec.video_data?.title||'—';
+      const body=cr.body||spec.link_data?.message||spec.video_data?.message||'—';
+      const ft=detectFmt(ad);const fc=fmtColors[ft]||'#666';
+      const sp=parseFloat(ins.spend||0);const ct=parseFloat(ins.ctr||0);
+      let cv=0;if(ins.actions){const a=ins.actions.find(x=>x.action_type==='onsite_conversion.messaging_conversation_started_7d'||x.action_type==='messaging_first_reply');if(a)cv=parseInt(a.value)||0;}
+      const colors=['#8621fe','#34c3f0','#22c55e','#f59e0b','#ec4899','#6366f1','#14b8a6','#f97316'];
+      const col=colors[i%colors.length];
+      return`<tr>
+        <td><div style="display:flex;align-items:center;gap:6px"><span style="width:3px;height:28px;background:${col};border-radius:2px;display:inline-block;flex-shrink:0"></span><span style="font-weight:600;font-size:10px">${tr(ad.name,35)}</span></div></td>
+        <td style="color:#67d8f7;font-size:10px">${tr(title,28)}</td>
+        <td style="color:rgba(255,255,255,.6);font-size:10px">${tr(body,40)}</td>
+        <td style="text-align:center"><span style="background:${fc}22;color:${fc};border:1px solid ${fc}44;border-radius:100px;padding:2px 6px;font-size:9px;font-weight:600;white-space:nowrap">${fmtEmoji[ft]} ${ft}</span></td>
+        <td style="text-align:right;font-weight:600;font-size:11px">${fmtR(sp)}</td>
+        <td style="text-align:right;font-weight:700;font-size:11px;color:${ct>=ctr?'#4ade80':'#f87171'}">${fmtP(ct)}</td>
+        <td style="text-align:right;color:${cv>0?'#4ade80':'rgba(255,255,255,.4)'};font-weight:${cv>0?700:400};font-size:11px">${cv>0?cv:'—'}</td>
+      </tr>`;
+    }).join('');
+
+  // Matriz audiência
+  const ageOrder=['18-24','25-34','35-44','45-54','55-64','65+'];
+  const matrix={};
+  ageData.forEach(row=>{
+    const age=row.age||'?';const gender=row.gender||'?';
+    if(!ageOrder.includes(age)||!['female','male'].includes(gender))return;
+    if(!matrix[age])matrix[age]={female:{reach:0,clicks:0,impr:0},male:{reach:0,clicks:0,impr:0}};
+    matrix[age][gender].reach+=parseInt(row.reach||0);
+    matrix[age][gender].clicks+=parseInt(row.clicks||0);
+    matrix[age][gender].impr+=parseInt(row.impressions||0);
   });
+  let maxCtr2=0;
+  ageOrder.forEach(age=>{if(!matrix[age])return;['female','male'].forEach(g=>{const d2=matrix[age][g];const c=d2.impr>0?d2.clicks/d2.impr*100:0;if(c>maxCtr2)maxCtr2=c;});});
+  function hc2(ctr2){if(!ctr2||maxCtr2===0)return'rgba(255,255,255,.04)';const p=ctr2/maxCtr2;return p>.8?'rgba(134,33,254,.45)':p>.6?'rgba(134,33,254,.28)':p>.4?'rgba(134,33,254,.16)':p>.2?'rgba(134,33,254,.08)':'rgba(255,255,255,.04)';}
 
-  const opt={
-    margin:[10,8,10,8],
-    filename:nomeArquivo,
-    image:{type:'jpeg',quality:0.92},
-    html2canvas:{scale:1.5,useCORS:true,backgroundColor:'#0a0a0a'},
-    jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
-    pagebreak:{mode:['avoid-all','css']},
-  };
+  const matrixRows=ageOrder.filter(age=>matrix[age]).map(age=>{
+    const cells=['female','male'].map(g=>{
+      const d2=matrix[age]?.[g]||{reach:0,clicks:0,impr:0};
+      const ct2=d2.impr>0?d2.clicks/d2.impr*100:0;
+      const best=ct2>0&&ct2===maxCtr2;
+      return`<td style="background:${hc2(ct2)};text-align:right;padding:6px 8px;font-size:10px">${fmt(d2.reach)}</td>
+             <td style="background:${hc2(ct2)};text-align:right;padding:6px 8px;font-size:10px">${fmt(d2.clicks)}</td>
+             <td style="background:${hc2(ct2)};text-align:right;padding:6px 8px;font-size:11px;font-weight:${best?700:500};color:${ct2>maxCtr2*.6?'#c084fc':'rgba(255,255,255,.7)'}">${ct2>0?fmtP(ct2):'—'}${best?' ★':''}</td>`;
+    }).join('');
+    return`<tr><td style="font-weight:700;padding:6px 10px;font-size:11px;color:#fff;border-right:1px solid rgba(255,255,255,.08)">${age}</td>${cells}</tr>`;
+  }).join('');
+
+  // Plataformas
+  const platColors={facebook:'#1877f2',instagram:'#e1306c',whatsapp:'#25d366'};
+  const platEmoji={facebook:'🔵',instagram:'🟣',whatsapp:'🟢'};
+  const maxPlatSpend=Math.max(...plats.map(p=>parseFloat(p.spend||0)),1);
+  const platRows=plats.slice(0,4).map(p=>{
+    const pct=Math.round(parseFloat(p.spend||0)/maxPlatSpend*100);
+    const pc=platColors[p.publisher_platform]||'#666';
+    return`<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+      <span style="font-size:14px">${platEmoji[p.publisher_platform]||'🔘'}</span>
+      <div style="flex:1">
+        <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+          <span style="font-size:11px;font-weight:600;text-transform:capitalize">${p.publisher_platform}</span>
+          <span style="font-size:11px;font-weight:700;color:${pc}">${fmtR(parseFloat(p.spend||0))}</span>
+        </div>
+        <div style="height:6px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden">
+          <div style="height:100%;width:${pct}%;background:${pc};border-radius:3px"></div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:3px">
+          <span style="font-size:9px;color:rgba(255,255,255,.4)">CTR <strong style="color:rgba(255,255,255,.7)">${fmtP(parseFloat(p.ctr||0))}</strong></span>
+          <span style="font-size:9px;color:rgba(255,255,255,.4)">CPM <strong style="color:rgba(255,255,255,.7)">${fmtR(parseFloat(p.cpm||0))}</strong></span>
+          <span style="font-size:9px;color:rgba(255,255,255,.4)">Alcance <strong style="color:rgba(255,255,255,.7)">${fmt(parseInt(p.reach||0))}</strong></span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Regiões
+  const regRows=regions.slice(0,6).map((r,i)=>{
+    const cols=['#8621fe','#34c3f0','#22c55e','#f59e0b','#ec4899','#6366f1'];
+    const pct=Math.round(parseFloat(r.spend||0)/Math.max(...regions.map(x=>parseFloat(x.spend||0)),1)*100);
+    return`<div style="display:flex;align-items:center;gap:7px;margin-bottom:6px">
+      <div style="font-size:10px;color:rgba(255,255,255,.6);width:100px;flex-shrink:0;text-align:right">${r.region||'—'}</div>
+      <div style="flex:1;height:20px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden">
+        <div style="height:100%;width:${pct}%;background:${cols[i%6]};border-radius:3px;display:flex;align-items:center;padding:0 6px;font-size:9px;font-weight:600;color:#fff">${pct>15?fmtR(parseFloat(r.spend||0)):''}</div>
+      </div>
+      <div style="font-size:9px;color:rgba(255,255,255,.45);width:110px;flex-shrink:0">CTR <strong style="color:rgba(255,255,255,.7)">${fmtP(parseFloat(r.ctr||0))}</strong> · Alc <strong style="color:rgba(255,255,255,.7)">${fmt(parseInt(r.reach||0))}</strong></div>
+    </div>`;
+  }).join('');
+
+  // Funil steps
+  const funnelSteps=[
+    {l:'Impressões',v:impr,c:'#6366f1',e:'👁'},
+    {l:'Alcance único',v:reach,c:'#8621fe',e:'🎯'},
+    {l:'Cliques',v:clicks,c:'#34c3f0',e:'🖱'},
+    {l:'Conversas',v:conv,c:'#22c55e',e:'💬'},
+    {l:'Agendamentos',v:agend,c:'#f59e0b',e:'📅',manual:true},
+    {l:'Comparecimentos',v:comp,c:'#ec4899',e:'✅',manual:true},
+    {l:'Vendas',v:vendas,c:'#4ade80',e:'💰',manual:true},
+  ];
+  const funnelHTML=funnelSteps.map((s,i)=>{
+    const prev=i>0?funnelSteps[i-1].v:s.v;
+    const pct=prev>0&&i>0&&s.v>0?Math.round(s.v/prev*100):null;
+    return`<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+      <div style="width:110px;text-align:right;font-size:10px;color:rgba(255,255,255,.55);flex-shrink:0">${s.e} ${s.l}${s.manual?'<span style="font-size:8px;color:'+s.c+';margin-left:4px">●</span>':''}</div>
+      <div style="flex:1;height:24px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden">
+        <div style="height:100%;width:${s.v>0?Math.max(6,Math.round(s.v/Math.max(...funnelSteps.map(x=>x.v),1)*100)):0}%;background:${s.c}33;border:1px solid ${s.c}55;border-radius:4px;display:flex;align-items:center;padding:0 8px">
+          <span style="font-size:10px;font-weight:700;color:${s.v>0?s.c:'rgba(255,255,255,.2)'}">${s.v>0?fmt(s.v):'—'}</span>
+        </div>
+      </div>
+      <div style="width:42px;flex-shrink:0;text-align:right">
+        ${pct!==null?`<span style="font-size:10px;font-weight:700;color:${pct>=50?'#4ade80':pct>=25?'#fbbf24':'#f87171'}">${pct}%</span>`:''}
+      </div>
+    </div>`;
+  }).join('');
+
+  const nomeArquivo=`Relatorio_${slugify(curAcc.name)}_${(curPeriodLabel||'periodo').replace(/[^a-zA-Z0-9]/g,'-')}.pdf`;
+
+  // ── HTML DO RELATÓRIO ──
+  const relHTML=`<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>${nomeArquivo}</title>
+<link href="https://fonts.googleapis.com/css2?family=Cardo:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#0a0a0a;color:#fff;font-size:12px;line-height:1.5;padding:0}
+.page{width:210mm;min-height:297mm;padding:12mm 14mm;background:#0a0a0a;position:relative}
+.header{display:flex;align-items:center;justify-content:space-between;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:16px}
+.header-left{display:flex;align-items:center;gap:10px}
+.header-icon{width:32px;height:32px;border-radius:8px;background:#8621fe;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.brand{font-family:'Cardo',serif;font-size:15px;font-weight:700}
+.brand-sub{font-size:9px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.8px}
+.header-right{text-align:right}
+.client-name{font-family:'Cardo',serif;font-size:16px;font-weight:700;color:#c084fc}
+.period-badge{font-size:10px;color:rgba(255,255,255,.45);margin-top:2px}
+.sec{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin:14px 0 8px;display:flex;align-items:center;gap:8px}
+.sec::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.07)}
+.kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:12px}
+.kpi{border-radius:10px;padding:10px 10px;background:#161616;border:1px solid rgba(255,255,255,.07)}
+.kpi-lbl{font-size:8px;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.45);margin-bottom:4px}
+.kpi-val{font-size:18px;font-weight:700;line-height:1}
+.kpi-sub{font-size:8px;color:rgba(255,255,255,.35);margin-top:3px}
+.kpi-purple{background:rgba(134,33,254,.08);border-color:rgba(134,33,254,.25);color:#c084fc}
+.kpi-blue{background:rgba(52,195,240,.08);border-color:rgba(52,195,240,.25);color:#67d8f7}
+.kpi-green{background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.25);color:#4ade80}
+.kpi-amber{background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.25);color:#fbbf24}
+.kpi-pink{background:rgba(236,72,153,.08);border-color:rgba(236,72,153,.25);color:#f472b6}
+.kpi-indigo{background:rgba(99,102,241,.08);border-color:rgba(99,102,241,.25);color:#a5b4fc}
+.fin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px}
+.fin{border-radius:10px;padding:12px 14px}
+.fin-invest{background:linear-gradient(135deg,#1d0b38,#2d1060);border:1px solid rgba(134,33,254,.3)}
+.fin-fat{background:linear-gradient(135deg,#0d2318,#0f3320);border:1px solid rgba(34,197,94,.3)}
+.fin-lucro{background:linear-gradient(135deg,#2a1508,#3d1f08);border:1px solid rgba(245,158,11,.3)}
+.fin-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.6px;opacity:.55;margin-bottom:5px}
+.fin-val{font-size:24px;font-weight:700;line-height:1}
+.fin-sub{font-size:9px;opacity:.45;margin-top:3px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px}
+.card{background:#161616;border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px;margin-bottom:10px}
+.card-title{font-size:9px;text-transform:uppercase;letter-spacing:.7px;color:rgba(255,255,255,.4);margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.card-title .dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.cross-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:10px}
+.cross{background:#161616;border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:8px 10px}
+.cross-lbl{font-size:8px;text-transform:uppercase;letter-spacing:.4px;color:rgba(255,255,255,.4);margin-bottom:3px}
+.cross-val{font-size:16px;font-weight:700;line-height:1}
+.cross-desc{font-size:8px;color:rgba(255,255,255,.3);margin-top:2px}
+.tag-g{display:inline-block;font-size:8px;padding:1px 6px;border-radius:100px;background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.25);margin-top:3px}
+.tag-w{display:inline-block;font-size:8px;padding:1px 6px;border-radius:100px;background:rgba(245,158,11,.15);color:#fbbf24;border:1px solid rgba(245,158,11,.25);margin-top:3px}
+.tag-r{display:inline-block;font-size:8px;padding:1px 6px;border-radius:100px;background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.25);margin-top:3px}
+table{width:100%;border-collapse:collapse;font-size:10px}
+th{text-align:left;padding:5px 8px;font-size:8px;text-transform:uppercase;letter-spacing:.4px;color:rgba(255,255,255,.35);font-weight:500;border-bottom:1px solid rgba(255,255,255,.08)}
+td{padding:7px 8px;border-bottom:1px solid rgba(255,255,255,.04);color:rgba(255,255,255,.8);vertical-align:middle}
+.matrix-table th{text-align:right;padding:5px 8px}
+.matrix-table th:first-child{text-align:left}
+.matrix-table td{text-align:right}
+.matrix-table td:first-child{text-align:left;font-weight:700;color:#fff;border-right:1px solid rgba(255,255,255,.08)}
+.footer{margin-top:14px;padding-top:10px;border-top:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:space-between}
+.footer-brand{font-family:'Cardo',serif;font-size:12px;color:rgba(255,255,255,.3)}
+.footer-note{font-size:9px;color:rgba(255,255,255,.25)}
+.manual-badge{font-size:8px;background:rgba(245,158,11,.15);color:#fbbf24;border:1px solid rgba(245,158,11,.3);border-radius:100px;padding:1px 5px;margin-left:4px;font-weight:600}
+.eng-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.eng-lbl{font-size:10px;font-weight:500}
+.eng-sub{font-size:9px;color:rgba(255,255,255,.35)}
+.eng-val{font-size:17px;font-weight:700}
+@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}.page{width:100%;min-height:unset;padding:8mm 10mm}}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <div class="header-icon">📈</div>
+      <div><div class="brand">Criativa Mídia</div><div class="brand-sub">Relatório de Performance</div></div>
+    </div>
+    <div class="header-right">
+      <div class="client-name">${curAcc.name}</div>
+      <div class="period-badge">${curAcc.niche} · ${curPeriodLabel||'Período'} · Gerado em ${new Date().toLocaleDateString('pt-BR')}</div>
+    </div>
+  </div>
+
+  <!-- KPIs META -->
+  <div class="sec"><span class="dot" style="background:#8621fe"></span>Métricas Meta Ads</div>
+  <div class="kpi-grid">
+    <div class="kpi kpi-purple"><div class="kpi-lbl">Investimento</div><div class="kpi-val">${fmtR(invest)}</div><div class="kpi-sub">${curPeriodLabel||''}</div></div>
+    <div class="kpi kpi-blue"><div class="kpi-lbl">Alcance único</div><div class="kpi-val">${fmt(reach)}</div><div class="kpi-sub">pessoas</div></div>
+    <div class="kpi kpi-green"><div class="kpi-lbl">Leads</div><div class="kpi-val">${fmt(leads)}</div><div class="kpi-sub">conversas iniciadas</div></div>
+    <div class="kpi kpi-amber"><div class="kpi-lbl">CTR médio</div><div class="kpi-val">${fmtP(ctr)}</div><div class="kpi-sub">${ctr>=1.5?'acima da média':ctr<1?'abaixo':'dentro da média'}</div></div>
+    <div class="kpi kpi-pink"><div class="kpi-lbl">CPM</div><div class="kpi-val">${fmtR(cpm)}</div><div class="kpi-sub">por mil impr.</div></div>
+    <div class="kpi kpi-indigo"><div class="kpi-lbl">Frequência</div><div class="kpi-val">${freq.toFixed(2)}x</div><div class="kpi-sub">${freq>3?'⚠ saturação':freq>2?'monitorar':'saudável'}</div></div>
+  </div>
+
+  <!-- FINANCEIRO -->
+  <div class="sec"><span class="dot" style="background:#22c55e"></span>Resultado financeiro</div>
+  <div class="fin-grid">
+    <div class="fin fin-invest"><div class="fin-lbl">Investimento total</div><div class="fin-val" style="color:#c084fc">${fmtR(invest)}</div><div class="fin-sub">${curPeriodLabel||''}</div></div>
+    <div class="fin fin-fat"><div class="fin-lbl">Faturamento</div><div class="fin-val" style="color:#4ade80">${fat>0?fmtR(fat):'—'}</div><div class="fin-sub">informado pelo cliente</div></div>
+    <div class="fin fin-lucro"><div class="fin-lbl">Lucro estimado</div><div class="fin-val" style="color:${lucro>=0?'#fbbf24':'#f87171'}">${fat>0?fmtR(lucro):'—'}</div><div class="fin-sub">${roi!==0?'ROI '+fmtP(roi):'preencha o faturamento'}</div></div>
+  </div>
+
+  <!-- CRUZAMENTOS -->
+  <div class="sec"><span class="dot" style="background:#f59e0b"></span>Cruzamentos calculados</div>
+  <div class="cross-grid">
+    ${[
+      {l:'Custo por lead',v:cpl>0?fmtR(cpl):'—',d:'invest ÷ leads',t:cpl>0&&cpl<50?'g':cpl>120?'r':''},
+      {l:'Custo por agend.',v:cpa>0?fmtR(cpa):'—',d:'invest ÷ agend.',t:''},
+      {l:'Taxa agendamento',v:txAg>0?fmtP(txAg):'—',d:'agend ÷ leads',t:txAg>=60?'g':txAg>0&&txAg<30?'w':''},
+      {l:'Taxa comparec.',v:txCo>0?fmtP(txCo):'—',d:'comp ÷ agend.',t:txCo>=70?'g':txCo>0&&txCo<50?'w':''},
+      {l:'Taxa de conversão',v:txVenda>0?fmtP(txVenda):'—',d:'vendas ÷ comp.',t:txVenda>=50?'g':txVenda>0&&txVenda<20?'w':''},
+      {l:'Custo por venda',v:cpv>0?fmtR(cpv):'—',d:'invest ÷ vendas',t:''},
+      {l:'Ticket médio',v:ticket>0?fmtR(ticket):'—',d:'fat ÷ vendas',t:''},
+      {l:'ROI estimado',v:roi!==0?fmtP(roi):'—',d:'(fat−invest) ÷ invest',t:roi>=200?'g':roi>0&&roi<100?'w':''},
+    ].map(c=>`<div class="cross"><div class="cross-lbl">${c.l}</div><div class="cross-val" style="color:${c.t==='g'?'#4ade80':c.t==='r'?'#f87171':c.t==='w'?'#fbbf24':'#fff'}">${c.v}</div><div class="cross-desc">${c.d}</div>${c.t==='g'?'<span class="tag-g">bom</span>':c.t==='w'?'<span class="tag-w">atenção</span>':c.t==='r'?'<span class="tag-r">crítico</span>':''}</div>`).join('')}
+  </div>
+
+  <!-- FUNIL + ENGAJAMENTO -->
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:#22c55e"></span>Funil de conversão <span class="manual-badge">● manual</span></div>
+      ${funnelHTML}
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:#fbbf24"></span>Métricas de engajamento</div>
+      <div class="eng-row"><div><div class="eng-lbl">Taxa de engajamento</div><div class="eng-sub">engaj ÷ impressões</div></div><div class="eng-val" style="color:#4ade80">${fmtP(txEng)}</div></div>
+      <div class="eng-row"><div><div class="eng-lbl">CTR médio</div><div class="eng-sub">cliques ÷ impressões</div></div><div class="eng-val" style="color:#67d8f7">${fmtP(ctr)}</div></div>
+      <div class="eng-row"><div><div class="eng-lbl">Frequência</div><div class="eng-sub">${freq>3?'⚠ Alta — trocar criativos':freq>2?'Monitorar':'Saudável'}</div></div><div class="eng-val" style="color:${freq>3?'#f87171':freq>2?'#fbbf24':'#4ade80'}">${freq.toFixed(2)}x</div></div>
+      <div class="eng-row"><div><div class="eng-lbl">Reações ao conteúdo</div><div class="eng-sub">likes, corações, etc.</div></div><div class="eng-val" style="color:#f472b6">${fmt(react)}</div></div>
+      <div class="eng-row" style="border-bottom:none"><div><div class="eng-lbl">Impressões por pessoa</div><div class="eng-sub">impr ÷ alcance único</div></div><div class="eng-val" style="color:#a5b4fc">${(reach>0?impr/reach:0).toFixed(1)}x</div></div>
+    </div>
+  </div>
+
+  <!-- REGIÕES + PLATAFORMAS -->
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:#34c3f0"></span>Ranking de estados</div>
+      ${regRows||'<div style="color:rgba(255,255,255,.3);font-size:11px">Sem dados de região</div>'}
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:#22c55e"></span>Performance por plataforma</div>
+      ${platRows||'<div style="color:rgba(255,255,255,.3);font-size:11px">Sem dados de plataforma</div>'}
+    </div>
+  </div>
+
+  <!-- MATRIZ AUDIÊNCIA -->
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:#ec4899"></span>Audiência — faixa etária × gênero × CTR (heatmap)</div>
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th>Faixa etária</th>
+          <th colspan="3" style="text-align:center;color:#ec4899">👩 Feminino</th>
+          <th colspan="3" style="text-align:center;color:#34c3f0">👨 Masculino</th>
+        </tr>
+        <tr>
+          <th></th>
+          <th>Alcance</th><th>Cliques</th><th>CTR</th>
+          <th>Alcance</th><th>Cliques</th><th>CTR</th>
+        </tr>
+      </thead>
+      <tbody>${matrixRows||'<tr><td colspan="7" style="color:rgba(255,255,255,.3);text-align:center;padding:12px">Sem dados de audiência</td></tr>'}</tbody>
+    </table>
+    <div style="display:flex;align-items:center;gap:8px;margin-top:8px;flex-wrap:wrap">
+      ${['rgba(255,255,255,.04)','rgba(134,33,254,.08)','rgba(134,33,254,.16)','rgba(134,33,254,.28)','rgba(134,33,254,.45)'].map((c,i)=>`<span style="display:flex;align-items:center;gap:3px;font-size:8px;color:rgba(255,255,255,.4)"><span style="width:10px;height:10px;background:${c};border:1px solid rgba(255,255,255,.1);border-radius:2px;display:inline-block"></span>${['Sem dados','Baixo','Médio','Alto','★ Top'][i]}</span>`).join('')}
+      <span style="font-size:8px;color:#c084fc;margin-left:4px">★ = melhor CTR da conta</span>
+    </div>
+  </div>
+
+  <!-- ANÚNCIOS -->
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:#f472b6"></span>Anúncios — nome · título · legenda · formato · métricas</div>
+    ${adsRows?`<table>
+      <thead><tr>
+        <th style="min-width:150px">Nome do anúncio</th>
+        <th>Título</th><th>Legenda</th><th style="text-align:center">Formato</th>
+        <th style="text-align:right">Invest.</th>
+        <th style="text-align:right">CTR</th>
+        <th style="text-align:right">Conversas</th>
+      </tr></thead>
+      <tbody>${adsRows}</tbody>
+    </table>`:'<div style="color:rgba(255,255,255,.3);font-size:11px">Sem dados de anúncios</div>'}
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-note">Dados extraídos via Meta Ads API · ${new Date().toLocaleDateString('pt-BR')} · ${curPeriodLabel||''}</div>
+    <div class="footer-brand">Criativa Mídia &amp; Tráfego</div>
+  </div>
+
+</div>
+<scr'+'ipt>window.onload=()=>{setTimeout(()=>window.print(),800)}<'+'/scr'+'ipt>
+</body>
+</html>`;
+
+  // Abrir em nova janela e imprimir
+  const win=window.open('','_blank');
+  if(!win){toast('Permita pop-ups para gerar o PDF.','err');return;}
+  win.document.write(relHTML);
+  win.document.close();
+  toast('Relatório aberto — salve como PDF ✓','ok');
+}
+
+// ── MÓDULO DE RECONHECIMENTO ──
+// ── ABAS PRINCIPAIS ──
+let curTab='conversao';
+let curRecMode='aquecimento';
+let STATE_REC={};
+let REC_CAMPS=[], REC_ADSETS=[], REC_ADS=[];
+let REC_SELECTED_CAMP=null, REC_SELECTED_ADSET=null;
+
+function switchMainTab(tab){
+  curTab=tab;
+  document.getElementById('tab-conversao').classList.toggle('active',tab==='conversao');
+  document.getElementById('tab-reconhecimento').classList.toggle('active',tab==='reconhecimento');
+  document.getElementById('content').style.display=tab==='conversao'?'':'none';
+  document.getElementById('content-rec').style.display=tab==='reconhecimento'?'':'none';
+  if(tab==='reconhecimento'&&curAcc){
+    if(!STATE_REC[curAcc.id]) fetchRec();
+    else renderReconhecimento(STATE_REC[curAcc.id]);
+  }
+}
+
+function setRecMode(mode){
+  curRecMode=mode;
+  if(curAcc&&STATE_REC[curAcc.id]) renderReconhecimento(STATE_REC[curAcc.id]);
+}
+
+// ── FETCH REC ──
+async function fetchRec(){
+  if(!curAcc||!TOKEN)return;
+  const el=document.getElementById('content-rec');
+  if(!el)return;
+  el.innerHTML=`<div style="text-align:center;padding:3rem;color:var(--muted);font-size:12px"><div style="font-size:20px;margin-bottom:8px">↻</div>Buscando campanhas...</div>`;
+  REC_CAMPS=[];REC_ADSETS=[];REC_ADS=[];REC_SELECTED_CAMP=null;REC_SELECTED_ADSET=null;
+
+  const T=`access_token=${TOKEN}`;
+  const base=`https://graph.facebook.com/v19.0/act_${curAcc.id}/insights`;
+  const META_PRESETS=['today','yesterday','last_7d','last_14d','last_28d','last_30d','this_month','last_month','this_quarter','last_quarter','this_year','maximum','data_maximum'];
+  const PRESET_TO_RANGE={last_90d:()=>dateRange(90),last_180d:()=>dateRange(180),last_year:()=>lastYearRange()};
+  let periodParam='';
+  if(curPeriod==='custom'&&curCustomRange)periodParam=`&time_range=${encodeURIComponent(JSON.stringify(curCustomRange))}`;
+  else if(PRESET_TO_RANGE[curPeriod])periodParam=`&time_range=${encodeURIComponent(JSON.stringify(PRESET_TO_RANGE[curPeriod]()))}`;
+  else if(META_PRESETS.includes(curPeriod))periodParam=`&date_preset=${curPeriod}`;
+  else periodParam=`&date_preset=this_month`;
 
   try{
-    await html2pdf().set(opt).from(content).save();
-    toast('PDF gerado ✓','ok');
+    // Montar parâmetro de insights inline para campanhas
+    const META_PRESETS_CAMP=['today','yesterday','last_7d','last_14d','last_28d','last_30d','this_month','last_month','this_quarter','last_quarter','this_year','maximum'];
+    let insightsParam='';
+    if(curPeriod==='custom'&&curCustomRange){
+      insightsParam=`insights.time_range(${JSON.stringify(curCustomRange)})`;
+    } else if(META_PRESETS_CAMP.includes(curPeriod)){
+      insightsParam=`insights.date_preset(${curPeriod})`;
+    } else {
+      insightsParam=`insights.date_preset(this_month)`;
+    }
+
+    const [campR,accR,ageR,platR,regR]=await Promise.all([
+      fetch(`https://graph.facebook.com/v19.0/act_${curAcc.id}/campaigns?fields=id,name,objective,status,${insightsParam}{spend,reach,impressions,clicks,ctr,cpm,frequency,actions}&limit=50&${T}`).then(r=>r.json()),
+      fetch(`${base}?fields=spend,reach,impressions,clicks,ctr,cpm,frequency,actions,video_p25_watched_actions,video_p50_watched_actions,video_p75_watched_actions,video_p100_watched_actions${periodParam}&${T}`).then(r=>r.json()),
+      fetch(`${base}?fields=spend,reach,impressions,clicks,ctr,actions${periodParam}&breakdowns=age,gender&${T}`).then(r=>r.json()),
+      fetch(`${base}?fields=spend,reach,impressions,clicks,ctr,cpm,frequency${periodParam}&breakdowns=publisher_platform&${T}`).then(r=>r.json()),
+      fetch(`${base}?fields=spend,reach,impressions,clicks,ctr${periodParam}&breakdowns=region&${T}`).then(r=>r.json()),
+    ]);
+    REC_CAMPS=campR.data||[];
+    STATE_REC[curAcc.id]={
+      account:accR.data?.[0]||null,
+      age:ageR.data||[],
+      platform:platR.data||[],
+      regions:(regR.data||[]).filter(d=>parseFloat(d.spend||0)>0).sort((a,b)=>parseFloat(b.spend)-parseFloat(a.spend)),
+      camps:REC_CAMPS,
+    };
+    renderReconhecimento(STATE_REC[curAcc.id]);
   }catch(e){
-    toast('Erro ao gerar PDF.','err');
-  }finally{
-    hidden.forEach(({el,prev})=>el.style.display=prev);
+    el.innerHTML=`<div style="color:var(--r2);font-size:12px;padding:1rem;text-align:center">Erro de conexão.</div>`;
   }
+}
+
+async function fetchRecCamp(campId){
+  if(!TOKEN)return;
+  REC_SELECTED_CAMP=campId;REC_SELECTED_ADSET=null;REC_ADS=[];
+  const T=`access_token=${TOKEN}`;
+  const META_PRESETS=['today','yesterday','last_7d','last_14d','last_28d','last_30d','this_month','last_month','this_quarter','this_year','maximum'];
+  let pp='';
+  if(curPeriod==='custom'&&curCustomRange) pp=`insights.time_range(${JSON.stringify(curCustomRange)})`;
+  else if(META_PRESETS.includes(curPeriod)) pp=`insights.date_preset(${curPeriod})`;
+  else pp=`insights.date_preset(this_month)`;
+  const r=await fetch(`https://graph.facebook.com/v19.0/${campId}/adsets?fields=id,name,status,${pp}{spend,reach,impressions,clicks,ctr,cpm,frequency,actions}&limit=50&${T}`).then(r=>r.json());
+  REC_ADSETS=r.data||[];
+  if(curAcc&&STATE_REC[curAcc.id]) renderReconhecimento(STATE_REC[curAcc.id]);
+}
+
+async function fetchRecAdset(adsetId){
+  if(!TOKEN)return;
+  REC_SELECTED_ADSET=adsetId;
+  const T=`access_token=${TOKEN}`;
+  const META_PRESETS=['today','yesterday','last_7d','last_14d','last_28d','last_30d','this_month','last_month','this_quarter','this_year','maximum'];
+  let pp='';
+  if(curPeriod==='custom'&&curCustomRange) pp=`insights.time_range(${JSON.stringify(curCustomRange)})`;
+  else if(META_PRESETS.includes(curPeriod)) pp=`insights.date_preset(${curPeriod})`;
+  else pp=`insights.date_preset(this_month)`;
+  const r=await fetch(`https://graph.facebook.com/v19.0/${adsetId}/ads?fields=id,name,status,creative{title,body,object_story_spec},${pp}{spend,reach,impressions,clicks,ctr,cpm,frequency,actions}&limit=50&${T}`).then(r=>r.json());
+  REC_ADS=r.data||[];
+  if(curAcc&&STATE_REC[curAcc.id]) renderReconhecimento(STATE_REC[curAcc.id]);
+}
+
+// ── RENDER RECONHECIMENTO ──
+function renderReconhecimento(st){
+  const el=document.getElementById('content-rec');
+  if(!el)return;
+  const d=st?.account;
+
+  const invest=parseFloat(d?.spend||0);
+  const reach=parseInt(d?.reach||0);
+  const impr=parseInt(d?.impressions||0);
+  const ctr=parseFloat(d?.ctr||0);
+  const cpm=parseFloat(d?.cpm||0);
+  const freq=parseFloat(d?.frequency||0);
+  let likes=0,comments=0,shares=0,saves=0,videoViews=0;
+  if(d?.actions){d.actions.forEach(a=>{if(a.action_type==='post_reaction')likes=parseInt(a.value)||0;if(a.action_type==='comment')comments=parseInt(a.value)||0;if(a.action_type==='post')shares=parseInt(a.value)||0;if(a.action_type==='onsite_conversion.post_save')saves=parseInt(a.value)||0;if(a.action_type==='video_view')videoViews=parseInt(a.value)||0;});}
+  const totalEng=likes+comments+shares+saves;
+  const txEngAlc=reach>0?totalEng/reach*100:0;
+  const cpe=totalEng>0?invest/totalEng:0;
+  let v25=0,v50=0,v75=0,v100=0;
+  if(d?.video_p25_watched_actions?.[0])v25=parseInt(d.video_p25_watched_actions[0].value)||0;
+  if(d?.video_p50_watched_actions?.[0])v50=parseInt(d.video_p50_watched_actions[0].value)||0;
+  if(d?.video_p75_watched_actions?.[0])v75=parseInt(d.video_p75_watched_actions[0].value)||0;
+  if(d?.video_p100_watched_actions?.[0])v100=parseInt(d.video_p100_watched_actions[0].value)||0;
+
+  // Plataformas
+  const platColors={facebook:'#1877f2',instagram:'#e1306c',whatsapp:'#25d366'};
+  const maxPlatSpend=Math.max(...(st.platform||[]).map(p=>parseFloat(p.spend||0)),1);
+  const platRows=(st.platform||[]).slice(0,4).map(p=>{
+    const pc=platColors[p.publisher_platform]||'#666';
+    const pct=Math.round(parseFloat(p.spend||0)/maxPlatSpend*100);
+    return`<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+      <div style="font-size:10px;font-weight:600;text-transform:capitalize;color:${pc};width:70px;flex-shrink:0">${p.publisher_platform}</div>
+      <div style="flex:1;height:16px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${pc}bb;border-radius:3px"></div></div>
+      <div style="font-size:10px;color:var(--muted);width:120px;text-align:right">Alc <strong style="color:var(--white)">${fmt(parseInt(p.reach||0))}</strong> · CTR <strong style="color:var(--white)">${fmtP(parseFloat(p.ctr||0))}</strong></div>
+    </div>`;
+  }).join('');
+
+  // Regiões (ranking)
+  const maxRegSpend=Math.max(...(st.regions||[]).map(r=>parseFloat(r.spend||0)),1);
+  const regRows=(st.regions||[]).slice(0,7).map((r,i)=>{
+    const cols=['#8621fe','#34c3f0','#22c55e','#f59e0b','#ec4899','#6366f1','#14b8a6'];
+    const pct=Math.round(parseFloat(r.spend||0)/maxRegSpend*100);
+    return`<div style="display:flex;align-items:center;gap:7px;margin-bottom:5px">
+      <div style="font-size:10px;color:rgba(255,255,255,.6);width:90px;text-align:right;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.region||'—'}</div>
+      <div style="flex:1;height:16px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${cols[i%7]};border-radius:3px;display:flex;align-items:center;padding:0 6px;font-size:9px;font-weight:600;color:#fff">${pct>18?fmtR(parseFloat(r.spend||0)):''}</div></div>
+      <div style="font-size:9px;color:rgba(255,255,255,.45);width:100px;flex-shrink:0;text-align:right">Alc <strong style="color:rgba(255,255,255,.7)">${fmt(parseInt(r.reach||0))}</strong> · ${fmtP(parseFloat(r.ctr||0))}</div>
+    </div>`;
+  }).join('');
+
+  // Cards de campanhas
+  const objBadge={OUTCOME_AWARENESS:'Reconhecimento',OUTCOME_ENGAGEMENT:'Engajamento',BRAND_AWARENESS:'Marca',REACH:'Alcance',POST_ENGAGEMENT:'Engajamento',PAGE_LIKES:'Curtidas',VIDEO_VIEWS:'Vídeo',OUTCOME_TRAFFIC:'Tráfego',OUTCOME_LEADS:'Leads',OUTCOME_SALES:'Vendas'};
+  const camps=st.camps||[];
+  const campCards=camps.length>0?camps.map(c=>{
+    const ins=c.insights?.data?.[0];
+    const sp=parseFloat(ins?.spend||0);const rc=parseInt(ins?.reach||0);const ct=parseFloat(ins?.ctr||0);const fr=parseFloat(ins?.frequency||0);
+    const isSelected=REC_SELECTED_CAMP===c.id;
+    const badge=objBadge[c.objective]||c.objective||'—';
+    const stColor=c.status==='ACTIVE'?'#4ade80':c.status==='PAUSED'?'#fbbf24':'#6b7280';
+    return`<div onclick="fetchRecCamp('${c.id}')" style="cursor:pointer;background:${isSelected?'rgba(134,33,254,.15)':'rgba(255,255,255,.03)'};border:1px solid ${isSelected?'rgba(134,33,254,.5)':'rgba(255,255,255,.08)'};border-radius:var(--radius-sm);padding:.8rem;transition:all .15s">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px;margin-bottom:5px">
+        <div style="font-size:11px;font-weight:600;line-height:1.3;flex:1">${c.name}</div>
+        <div style="display:flex;align-items:center;gap:3px;flex-shrink:0"><span style="width:6px;height:6px;border-radius:50%;background:${stColor};display:inline-block"></span><span style="font-size:9px;color:${stColor}">${c.status==='ACTIVE'?'Ativa':c.status==='PAUSED'?'Pausada':'—'}</span></div>
+      </div>
+      <span style="font-size:9px;background:rgba(52,195,240,.1);color:var(--b2);border:1px solid rgba(52,195,240,.2);border-radius:100px;padding:1px 7px;display:inline-block;margin-bottom:6px">${badge}</span>
+      ${ins?`<div style="display:flex;gap:8px;flex-wrap:wrap">
+        <span style="font-size:10px;color:var(--muted)">Invest <strong style="color:var(--white)">${fmtR(sp)}</strong></span>
+        <span style="font-size:10px;color:var(--muted)">Alcance <strong style="color:var(--white)">${fmt(rc)}</strong></span>
+        <span style="font-size:10px;color:var(--muted)">CTR <strong style="color:var(--white)">${fmtP(ct)}</strong></span>
+        <span style="font-size:10px;color:var(--muted)">Freq <strong style="color:${fr>3?'var(--r2)':fr>2?'var(--a2)':'var(--g2)'}">${fr.toFixed(1)}x</strong></span>
+      </div>`:`<div style="font-size:10px;color:rgba(255,255,255,.25)">Sem dados no período</div>`}
+      ${isSelected?`<div style="font-size:9px;color:var(--p3);margin-top:5px">▼ Conjuntos carregados abaixo</div>`:''}
+    </div>`;
+  }).join(''):`<div style="color:var(--muted);font-size:12px;grid-column:1/-1;padding:.5rem">Sem campanhas encontradas.</div>`;
+
+  // Conjuntos
+  const adsetHTML=REC_ADSETS.length>0?`
+    <div class="sec" style="margin-top:.25rem"><span class="dot" style="background:var(--b)"></span>Conjuntos de anúncios — ${REC_CAMPS.find(c=>c.id===REC_SELECTED_CAMP)?.name||''}</div>
+    <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:1.25rem">
+      ${REC_ADSETS.map(as=>{
+        const ins=as.insights?.data?.[0];
+        const sp=parseFloat(ins?.spend||0);const rc=parseInt(ins?.reach||0);const ct=parseFloat(ins?.ctr||0);const fr=parseFloat(ins?.frequency||0);
+        const isSel=REC_SELECTED_ADSET===as.id;
+        return`<div onclick="fetchRecAdset('${as.id}')" style="cursor:pointer;background:${isSel?'rgba(52,195,240,.1)':'rgba(255,255,255,.02)'};border:1px solid ${isSel?'rgba(52,195,240,.4)':'rgba(255,255,255,.07)'};border-radius:var(--radius-sm);padding:.65rem 1rem;display:flex;align-items:center;gap:10px;transition:all .15s">
+          <div style="flex:1">
+            <div style="font-size:11px;font-weight:600;margin-bottom:3px">${as.name}</div>
+            ${ins?`<div style="display:flex;gap:10px;flex-wrap:wrap">
+              <span style="font-size:10px;color:var(--muted)">Invest <strong style="color:var(--white)">${fmtR(sp)}</strong></span>
+              <span style="font-size:10px;color:var(--muted)">Alcance <strong style="color:var(--white)">${fmt(rc)}</strong></span>
+              <span style="font-size:10px;color:var(--muted)">CTR <strong style="color:var(--white)">${fmtP(ct)}</strong></span>
+              <span style="font-size:10px;color:var(--muted)">Freq <strong style="color:${fr>3?'var(--r2)':fr>2?'var(--a2)':'var(--g2)'}">${fr.toFixed(1)}x</strong></span>
+            </div>`:`<span style="font-size:10px;color:rgba(255,255,255,.25)">Sem dados no período</span>`}
+          </div>
+          <div style="font-size:10px;color:${isSel?'var(--b2)':'var(--muted)'};flex-shrink:0">${isSel?'✓ Selecionado':'Ver anúncios →'}</div>
+        </div>`;
+      }).join('')}
+    </div>`:'';
+
+  // Anúncios
+  const fmtColors={IMAGE:'#34c3f0',VIDEO:'#8621fe',CAROUSEL:'#f59e0b',STORY:'#ec4899',REELS:'#22c55e'};
+  const fmtEmoji={IMAGE:'🖼️',VIDEO:'🎥',CAROUSEL:'🎠',STORY:'📱',REELS:'🎬'};
+  function detectFmt2(ad){const n=(ad.name||'').toLowerCase();if(n.includes('reel'))return'REELS';if(n.includes('video')||n.includes('vídeo'))return'VIDEO';if(n.includes('carrossel')||n.includes('carousel'))return'CAROUSEL';if(n.includes('storie')||n.includes('story'))return'STORY';if(ad.creative?.object_story_spec?.video_data)return'VIDEO';return'IMAGE';}
+  const tr2=(s,n)=>s&&s!=='—'&&s.length>n?s.substring(0,n)+'…':(s||'—');
+  const adsHTML=REC_ADS.length>0?`
+    <div class="sec"><span class="dot" style="background:var(--pk)"></span>Anúncios — ${REC_ADSETS.find(a=>a.id===REC_SELECTED_ADSET)?.name||''}</div>
+    <div style="overflow-x:auto;margin-bottom:1.25rem"><table style="width:100%;border-collapse:collapse;font-size:11px">
+      <thead><tr style="border-bottom:1px solid var(--border)">
+        <th style="text-align:left;padding:7px 10px;font-size:9px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:500;min-width:150px">Nome</th>
+        <th style="text-align:left;padding:7px 8px;font-size:9px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:500;min-width:130px">Título</th>
+        <th style="text-align:left;padding:7px 8px;font-size:9px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:500;min-width:150px">Legenda</th>
+        <th style="text-align:center;padding:7px 6px;font-size:9px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:500">Formato</th>
+        <th style="text-align:center;padding:7px 6px;font-size:9px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:500">Status</th>
+        <th style="text-align:right;padding:7px 6px;font-size:9px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:500">Invest.</th>
+        <th style="text-align:right;padding:7px 6px;font-size:9px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:500">Alcance</th>
+        <th style="text-align:right;padding:7px 6px;font-size:9px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:500">CTR</th>
+        <th style="text-align:right;padding:7px 6px;font-size:9px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:500">Freq.</th>
+        <th style="text-align:right;padding:7px 6px;font-size:9px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:500">Engaj.</th>
+      </tr></thead>
+      <tbody>${REC_ADS.map((ad,i)=>{
+        const ins=ad.insights?.data?.[0];
+        const cr=ad.creative||{};const spec=cr.object_story_spec||{};
+        const title=cr.title||spec.link_data?.name||spec.video_data?.title||'—';
+        const body=cr.body||spec.link_data?.message||spec.video_data?.message||'—';
+        const ft=detectFmt2(ad);const fc=fmtColors[ft]||'#666';
+        const sp=parseFloat(ins?.spend||0);const rc=parseInt(ins?.reach||0);const ct=parseFloat(ins?.ctr||0);const fr=parseFloat(ins?.frequency||0);
+        let eng=0;if(ins?.actions){const a=ins.actions.find(x=>x.action_type==='page_engagement'||x.action_type==='post_engagement');if(a)eng=parseInt(a.value)||0;}
+        const stColor=ad.status==='ACTIVE'?'#4ade80':ad.status==='PAUSED'?'#fbbf24':'#6b7280';
+        const col=['#8621fe','#34c3f0','#22c55e','#f59e0b','#ec4899','#6366f1'][i%6];
+        return`<tr style="border-bottom:1px solid rgba(255,255,255,.04)">
+          <td style="padding:8px 10px"><div style="display:flex;align-items:center;gap:6px"><span style="width:3px;height:28px;background:${col};border-radius:2px;display:inline-block;flex-shrink:0"></span><span style="font-weight:500">${tr2(ad.name,30)}</span></div></td>
+          <td style="padding:8px;color:var(--b2);font-size:10px">${tr2(title,25)}</td>
+          <td style="padding:8px;color:rgba(255,255,255,.55);font-size:10px;line-height:1.4">${tr2(body,40)}</td>
+          <td style="padding:8px;text-align:center"><span style="background:${fc}20;color:${fc};border:1px solid ${fc}40;border-radius:100px;padding:2px 6px;font-size:9px;font-weight:600">${fmtEmoji[ft]} ${ft}</span></td>
+          <td style="padding:8px;text-align:center;font-size:10px;font-weight:600;color:${stColor}">${ad.status==='ACTIVE'?'Ativa':ad.status==='PAUSED'?'Pausada':'—'}</td>
+          <td style="padding:8px;text-align:right;font-weight:600">${sp>0?fmtR(sp):'—'}</td>
+          <td style="padding:8px;text-align:right">${rc>0?fmt(rc):'—'}</td>
+          <td style="padding:8px;text-align:right;font-weight:600;color:${ct>0?'var(--b2)':'var(--muted)'}">${ct>0?fmtP(ct):'—'}</td>
+          <td style="padding:8px;text-align:right;color:${fr>3?'var(--r2)':fr>2?'var(--a2)':'var(--g2)'};font-weight:${fr>0?600:400}">${fr>0?fr.toFixed(1)+'x':'—'}</td>
+          <td style="padding:8px;text-align:right">${eng>0?fmt(eng):'—'}</td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table></div>`:'';
+
+  // ── HTML FINAL ──
+  el.innerHTML=`
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:1.25rem;flex-wrap:wrap">
+    <div class="mode-pills">
+      <button class="mode-pill ${curRecMode==='aquecimento'?'active':''}" onclick="setRecMode('aquecimento')">🔥 Aquecimento de funil</button>
+      <button class="mode-pill ${curRecMode==='independente'?'active-ind':''}" onclick="setRecMode('independente')">🎯 Campanha independente</button>
+    </div>
+    <button class="btn-refresh" onclick="fetchRec()" style="margin-left:auto">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="12" height="12"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      Atualizar
+    </button>
+  </div>
+
+  <div style="background:${curRecMode==='aquecimento'?'rgba(134,33,254,.07)':'rgba(52,195,240,.07)'};border:1px solid ${curRecMode==='aquecimento'?'rgba(134,33,254,.2)':'rgba(52,195,240,.2)'};border-radius:var(--radius-sm);padding:9px 13px;font-size:11px;color:${curRecMode==='aquecimento'?'rgba(134,33,254,.9)':'rgba(52,195,240,.9)'};margin-bottom:1.25rem">
+    ${curRecMode==='aquecimento'?'🔥 <strong>Aquecimento:</strong> campanhas preparando audiências para o funil de conversão.':'🎯 <strong>Campanha independente:</strong> visibilidade e posicionamento sem objetivo de conversão imediata.'}
+  </div>
+
+  <div class="sec"><span class="dot" style="background:var(--p)"></span>Visão geral — ${curPeriodLabel||'Período'}</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:7px;margin-bottom:1.25rem">
+    ${[
+      {l:'Investimento',v:fmtR(invest),c:'#c084fc',bg:'rgba(134,33,254,.08)',bd:'rgba(134,33,254,.25)'},
+      {l:'Alcance único',v:fmt(reach),c:'#67d8f7',bg:'rgba(52,195,240,.08)',bd:'rgba(52,195,240,.25)'},
+      {l:'Impressões',v:fmt(impr),c:'#a5b4fc',bg:'rgba(99,102,241,.08)',bd:'rgba(99,102,241,.25)'},
+      {l:'Frequência',v:freq.toFixed(2)+'x',c:freq>3?'#f87171':freq>2?'#fbbf24':'#4ade80',bg:'rgba(99,102,241,.06)',bd:'rgba(99,102,241,.15)',sub:freq>3?'⚠ Saturação':freq>2?'Monitorar':'Saudável'},
+      {l:'CPM',v:fmtR(cpm),c:'#fbbf24',bg:'rgba(245,158,11,.08)',bd:'rgba(245,158,11,.25)'},
+      {l:'Custo/pessoa',v:reach>0?fmtR(invest/reach):'—',c:'#f472b6',bg:'rgba(236,72,153,.08)',bd:'rgba(236,72,153,.25)'},
+    ].map(k=>`<div style="border-radius:var(--radius);padding:.9rem;background:${k.bg};border:1px solid ${k.bd}">
+      <div style="font-size:9px;text-transform:uppercase;letter-spacing:.5px;opacity:.55;margin-bottom:4px">${k.l}</div>
+      <div style="font-size:20px;font-weight:700;color:${k.c}">${k.v}</div>
+      ${k.sub?`<div style="font-size:9px;opacity:.7;margin-top:3px;color:${k.c}">${k.sub}</div>`:''}
+    </div>`).join('')}
+  </div>
+
+  <div class="sec"><span class="dot" style="background:var(--b)"></span>Engajamento com o conteúdo</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:7px;margin-bottom:1.25rem">
+    ${[
+      {icon:'❤️',v:fmt(likes),l:'Reações',c:'#f472b6'},
+      {icon:'💬',v:fmt(comments),l:'Comentários',c:'#67d8f7'},
+      {icon:'🔁',v:fmt(shares),l:'Compartilh.',c:'#a5b4fc'},
+      {icon:'🔖',v:fmt(saves),l:'Salvamentos',c:'#4ade80'},
+      {icon:'📊',v:fmt(totalEng),l:'Engaj. total',c:'#fbbf24'},
+      {icon:'📈',v:fmtP(txEngAlc),l:'Taxa eng/alc',c:'#c084fc'},
+      {icon:'💸',v:cpe>0?fmtR(cpe):'—',l:'Custo/eng',c:'#f97316'},
+      ...(videoViews>0?[{icon:'▶️',v:fmt(videoViews),l:'Views vídeo',c:'#22c55e'}]:[]),
+    ].map(e=>`<div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.7rem;text-align:center">
+      <div style="font-size:16px;margin-bottom:3px">${e.icon}</div>
+      <div style="font-size:15px;font-weight:700;color:${e.c}">${e.v}</div>
+      <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-top:2px">${e.l}</div>
+    </div>`).join('')}
+  </div>
+
+  ${v25>0?`<div class="sec"><span class="dot" style="background:var(--g)"></span>Retenção de vídeo</div>
+  <div class="card" style="margin-bottom:1.25rem">${[{l:'25%',v:v25,c:'#4ade80'},{l:'50%',v:v50,c:'#34c3f0'},{l:'75%',v:v75,c:'#f59e0b'},{l:'100%',v:v100,c:'#ec4899'}].map(s=>{const pct=v25>0?Math.round(s.v/v25*100):0;return`<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><div style="font-size:10px;color:rgba(255,255,255,.5);width:36px;flex-shrink:0;text-align:right">${s.l}</div><div style="flex:1;height:18px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${s.c}88;border-radius:3px;display:flex;align-items:center;padding:0 7px;font-size:9px;font-weight:600;color:#fff">${s.v>0?fmt(s.v):''}</div></div><div style="font-size:11px;font-weight:700;color:${s.c};width:32px;text-align:right">${pct}%</div></div>`;}).join('')}</div>`:''}
+
+  <div class="grid-21" style="margin-bottom:1.25rem">
+    <div class="card" style="border:${curRecMode==='independente'?'1px solid rgba(52,195,240,.3)':'1px solid var(--border)'}">
+      <div class="card-title"><span class="dot" style="background:var(--b2)"></span>${curRecMode==='independente'?'📍 Penetração territorial':'Mapa — distribuição geográfica'}</div>
+      <div id="rec-brazil-map" style="width:100%;min-height:240px;background:var(--bg3);border-radius:var(--radius-sm);overflow:hidden;margin-bottom:8px;display:flex;align-items:center;justify-content:center"><span style="color:var(--muted);font-size:12px">Carregando mapa...</span></div>
+      <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
+        <span style="font-size:9px;color:var(--muted)">Sem dados</span>
+        ${['rgba(134,33,254,.12)','rgba(134,33,254,.3)','rgba(134,33,254,.55)','rgba(134,33,254,.8)'].map(c=>`<div style="width:14px;height:6px;background:${c};border-radius:2px"></div>`).join('')}
+        <span style="font-size:9px;color:var(--muted)">Alto invest.</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--g)"></span>Por plataforma</div>
+      ${platRows||'<div style="color:var(--muted);font-size:12px">Sem dados</div>'}
+      <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+        <div style="font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:6px">Ranking de estados</div>
+        ${regRows||'<div style="color:var(--muted);font-size:12px">Sem dados</div>'}
+      </div>
+    </div>
+  </div>
+
+  <div class="sec"><span class="dot" style="background:var(--a)"></span>Campanhas — clique para detalhar</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px;margin-bottom:1.25rem">${campCards}</div>
+
+  ${adsetHTML}
+  ${adsHTML}
+
+  <div class="sec"><span class="dot" style="background:var(--pk)"></span>Audiência — quem está engajando</div>
+  <div class="card" style="margin-bottom:1.25rem">
+    <div class="card-title"><span class="dot" style="background:var(--pk2)"></span>Faixa etária × gênero — CTR e cliques</div>
+    <div id="rec-audience-matrix"></div>
+  </div>`;
+
+  requestAnimationFrame(()=>{
+    // Aguardar DOM estar disponível antes de renderizar mapa
+    setTimeout(()=>{
+      renderBrazilMap(st.regions||[],'rec-brazil-map');
+    }, 50);
+    renderAudienceMatrix(st.age||[],'rec-audience-matrix');
+  });
 }
 
 // ── BOOT ──
@@ -744,33 +1567,54 @@ function boot(){
   buildSidebar();
 }
 function resetToken(){try{localStorage.removeItem('cri4_token')}catch(e){}TOKEN='';curAcc=null;document.getElementById('app').style.display='none';document.getElementById('setup').style.display='flex';document.getElementById('tk').value=''}
-window.addEventListener('DOMContentLoaded',()=>{
-  // Verificar se é acesso via link de cliente
+window.addEventListener('DOMContentLoaded',async ()=>{
   const params=new URLSearchParams(window.location.search);
-  const contaParam=params.get('conta');
+  const clienteParam=params.get('cliente');
 
+  // ── MODO CLIENTE via link snapshot ──
+  if(clienteParam){
+    IS_CLIENT_MODE=true;
+    document.body.classList.add('client-mode');
+    document.getElementById('setup').style.display='none';
+    document.getElementById('app').style.display='flex';
+    document.getElementById('content').innerHTML=`
+      <div style="text-align:center;padding:3rem;color:var(--muted);font-size:13px">
+        <div style="font-size:28px;margin-bottom:12px">⏳</div>
+        Carregando relatório...
+      </div>`;
+
+    const snap=await loadClientSnapshot(clienteParam);
+    if(snap){
+      curAcc=snap.acc;
+      curPeriod=snap.period||'this_month';
+      curPeriodLabel=snap.periodLabel||'Período';
+      STATE=snap.state||{};
+      STATE.manual=snap.manual||{};
+      updatePill();
+      document.getElementById('main-tabs').style.display='flex';
+      renderDashboard();
+      document.getElementById('footer-txt').textContent=`${snap.acc?.name||'—'} · ${snap.periodLabel||''} · Gerado em ${new Date(snap.gerado).toLocaleDateString('pt-BR')}`;
+    } else {
+      document.getElementById('content').innerHTML=`
+        <div style="text-align:center;padding:3rem;color:var(--muted)">
+          <div style="font-size:28px;margin-bottom:12px">❌</div>
+          Link inválido ou expirado. Solicite um novo link à Criativa Mídia.
+        </div>`;
+    }
+    return;
+  }
+
+  // ── MODO GESTORA normal ──
   const t=localStorage.getItem('cri4_token');
   if(t&&t.length>20){
     TOKEN=t;
     document.getElementById('setup').style.display='none';
     document.getElementById('app').style.display='flex';
     buildSidebar();
-    // Se veio com param de conta, selecionar automaticamente
-    if(contaParam){
-      const idx=ACCOUNTS.findIndex(a=>slugify(a.name)===contaParam||a.id===contaParam);
-      if(idx>=0){
-        IS_CLIENT_MODE=true;
-        document.body.classList.add('client-mode');
-        selectAcc(idx);
-      }
-    }
-  } else if(contaParam){
-    // Sem token mas com param — mostrar setup informando que precisa do token Meta
-    document.getElementById('setup').style.display='flex';
   }
 
   // restaurar estado do sidebar
-  if(!contaParam&&localStorage.getItem('cri4_sb_collapsed')==='1'){
+  if(localStorage.getItem('cri4_sb_collapsed')==='1'){
     const sb=document.getElementById('sidebar');
     const btn=document.getElementById('sb-toggle-btn');
     if(sb){sb.classList.add('collapsed');if(btn)btn.textContent='›';}
@@ -780,14 +1624,26 @@ window.addEventListener('DOMContentLoaded',()=>{
 // ── SIDEBAR ──
 function buildSidebar(){
   document.getElementById('acc-list').innerHTML=ACCOUNTS.map((a,i)=>`
-    <div class="acc-item${curAcc&&curAcc.id===a.id?' active':''}" onclick="selectAcc(${i})">
+    <div class="acc-item${curAcc&&curAcc.id===a.id?' active':''}" onclick="selectAcc(${i})" ${a.restrita?'style="opacity:.5"':''} title="${a.restrita?'Conta com restrição — dados podem não estar disponíveis':''}">
       <div class="acc-av" style="background:${a.color}25;border:1px solid ${a.color}50;color:${a.color}">${a.i}</div>
-      <div><div class="acc-nm">${a.name}</div><div class="acc-ni">${a.niche}</div></div>
+      <div><div class="acc-nm">${a.name}${a.restrita?'<span style="font-size:8px;color:#f87171;margin-left:4px">⚠</span>':''}</div><div class="acc-ni">${a.niche}</div></div>
     </div>`).join('');
 }
 
 // ── SELECT / PERIOD ──
-function selectAcc(i){curAcc=ACCOUNTS[i];buildSidebar();updatePill();fetchAll()}
+function selectAcc(i){
+  curAcc=ACCOUNTS[i];
+  buildSidebar();
+  updatePill();
+  document.getElementById('main-tabs').style.display='flex';
+  if(curTab==='reconhecimento'){
+    document.getElementById('content').style.display='none';
+    document.getElementById('content-rec').style.display='';
+    fetchRec();
+  } else {
+    fetchAll();
+  }
+}
 function updatePill(){if(!curAcc)return;const av=document.getElementById('pill-av');av.textContent=curAcc.i;av.style.background=curAcc.color;document.getElementById('pill-nm').textContent=curAcc.name}
 // ── PERIOD PICKER ──
 function togglePeriodPicker(){
@@ -1629,8 +2485,8 @@ const SIGLA_MAP={'Acre':'AC','Alagoas':'AL','Amazonas':'AM','Amapá':'AP','Bahia
 const STATE_NAMES=Object.fromEntries(Object.entries(SIGLA_MAP).map(([n,s])=>[s,n]));
 let _regionMap={};
 
-function renderBrazilMap(regions){
-  const wrap=document.getElementById('brazil-map-wrap');
+function renderBrazilMap(regions, wrapId='brazil-map-wrap'){
+  const wrap=document.getElementById(wrapId);
   if(!wrap)return;
 
   // Montar mapa de dados por sigla
@@ -1769,8 +2625,8 @@ function showMapTip(e,s){
 function hideMapTip(){const tt=document.getElementById('map-tooltip');if(tt)tt.style.display='none';}
 
 // ── MATRIZ AUDIÊNCIA IDADE × GÊNERO ──
-function renderAudienceMatrix(ageData){
-  const el=document.getElementById('audience-matrix');
+function renderAudienceMatrix(ageData, targetId='audience-matrix'){
+  const el=document.getElementById(targetId);
   if(!el||!ageData||!ageData.length){if(el)el.innerHTML='<div style="color:var(--muted);font-size:12px;padding:.5rem">Sem dados de audiência.</div>';return;}
   const matrix={};
   const ageOrder=['13-17','18-24','25-34','35-44','45-54','55-64','65+'];
