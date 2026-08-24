@@ -396,6 +396,9 @@ body.client-mode .sidebar{display:none}
 body.client-mode .btn-gestora-only{display:none!important}
 body.client-mode #rb{display:none!important}
 body.client-mode .sb-toggle-btn{display:none!important}
+body.client-mode .mode-pills{display:none!important}
+body.client-mode .main-tab:not(.active){display:none!important}
+body.client-mode #btn-toggle-mode{display:none!important}
 
 /* ── BOTÕES AÇÃO TOPBAR ─── */
 .btn-action{display:flex;align-items:center;gap:5px;padding:6px 11px;border-radius:var(--radius-sm);font-size:11px;font-weight:600;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:opacity .15s;white-space:nowrap}
@@ -609,24 +612,30 @@ body.client-mode .sb-toggle-btn{display:none!important}
 <!-- MODAL COMPARTILHAR -->
 <div class="modal-overlay" id="share-modal" style="display:none" onclick="if(event.target===this)closeShareModal()">
   <div class="modal-box" onclick="event.stopPropagation()">
-    <div class="modal-title">🔗 Link do cliente</div>
-    <div class="modal-sub">Os dados são salvos na nuvem. O cliente abre o link e vê o dashboard sem precisar de token ou login.</div>
-    <div class="modal-note">✅ Cada aba gera um link separado. O cliente vê apenas a aba enviada.</div>
-    <span class="modal-label">Conta: <strong id="modal-acc-name">—</strong></span>
-    <div style="margin-top:.9rem;margin-bottom:.5rem">
-      <div style="font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:6px">Link — Conversão & Mensagens</div>
-      <div class="link-box">
+    <div class="modal-title">🔗 Links do cliente</div>
+    <div class="modal-sub">Cada link abre direto na visão certa — o cliente não vê outras abas nem pode trocar o modo.</div>
+    <div class="modal-note">Conta: <strong id="modal-acc-name">—</strong> · <span id="modal-period-label" style="opacity:.7">—</span></div>
+
+    <div style="margin-top:.9rem">
+      <div style="font-size:9px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:5px">📊 Conversão & Mensagens</div>
+      <div class="link-box" style="margin-bottom:.9rem">
         <input class="link-input" id="link-conversao" readonly value="Clique em Gerar →">
         <button class="btn-copy" onclick="copyLink('link-conversao')">Copiar</button>
       </div>
-    </div>
-    <div style="margin-bottom:.9rem">
-      <div style="font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:6px">Link — Reconhecimento & Engajamento</div>
-      <div class="link-box">
-        <input class="link-input" id="link-reconhecimento" readonly value="Clique em Gerar →">
-        <button class="btn-copy" onclick="copyLink('link-reconhecimento')">Copiar</button>
+
+      <div style="font-size:9px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:5px">🔥 Reconhecimento — Aquecimento de funil</div>
+      <div class="link-box" style="margin-bottom:.9rem">
+        <input class="link-input" id="link-aquecimento" readonly value="Clique em Gerar →">
+        <button class="btn-copy" onclick="copyLink('link-aquecimento')">Copiar</button>
+      </div>
+
+      <div style="font-size:9px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:5px">🎯 Reconhecimento — Campanha independente</div>
+      <div class="link-box" style="margin-bottom:.9rem">
+        <input class="link-input" id="link-independente" readonly value="Clique em Gerar →">
+        <button class="btn-copy" onclick="copyLink('link-independente')">Copiar</button>
       </div>
     </div>
+
     <button class="btn-main" id="btn-gerar-link" onclick="openShareModal()" style="margin-top:0;margin-bottom:.75rem">🔄 Gerar / Atualizar links</button>
     <button class="btn-modal-close" onclick="closeShareModal()">Fechar</button>
   </div>
@@ -797,45 +806,44 @@ function toggleClientMode(){
 // ── MODAL COMPARTILHAR ──
 function showShareModal(){
   if(!curAcc){toast('Selecione uma conta primeiro.','err');return;}
-  const modal=document.getElementById('share-modal');
-  const nameEl=document.getElementById('modal-acc-name');
-  if(nameEl) nameEl.textContent=curAcc.name;
-  const lc=document.getElementById('link-conversao');
-  const lr=document.getElementById('link-reconhecimento');
-  if(lc) lc.value='Clique em "Gerar / Atualizar links" →';
-  if(lr) lr.value='Clique em "Gerar / Atualizar links" →';
-  modal.style.display='flex';
+  document.getElementById('modal-acc-name').textContent=curAcc.name;
+  const pl=document.getElementById('modal-period-label');
+  if(pl) pl.textContent=curPeriodLabel||'Período';
+  ['link-conversao','link-aquecimento','link-independente'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.value='Clique em "Gerar / Atualizar links" →';
+  });
+  document.getElementById('share-modal').style.display='flex';
 }
 
 async function openShareModal(){
   if(!curAcc){toast('Selecione uma conta primeiro.','err');return;}
   if(!STATE.account){toast('Atualize os dados antes de gerar os links.','err');return;}
-
-  const modal=document.getElementById('share-modal');
   const btnGerar=document.getElementById('btn-gerar-link');
-  const lc=document.getElementById('link-conversao');
-  const lr=document.getElementById('link-reconhecimento');
-
-  modal.style.display='flex';
-  const nameEl=document.getElementById('modal-acc-name');
-  if(nameEl) nameEl.textContent=curAcc.name;
-  if(lc) lc.value='Salvando...';
-  if(lr) lr.value='Salvando...';
+  document.getElementById('modal-acc-name').textContent=curAcc.name;
+  const pl=document.getElementById('modal-period-label');
+  if(pl) pl.textContent=curPeriodLabel||'Período';
+  document.getElementById('share-modal').style.display='flex';
+  ['link-conversao','link-aquecimento','link-independente'].forEach(id=>{
+    const el=document.getElementById(id);if(el) el.value='Salvando...';
+  });
   if(btnGerar){btnGerar.textContent='⏳ Salvando...';btnGerar.disabled=true;}
 
   const snapId=await saveClientSnapshot();
+
+  if(btnGerar){btnGerar.textContent='🔄 Gerar / Atualizar links';btnGerar.disabled=false;}
   if(!snapId){
-    if(lc) lc.value='Erro ao salvar.';
-    if(lr) lr.value='Erro ao salvar.';
+    ['link-conversao','link-aquecimento','link-independente'].forEach(id=>{
+      const el=document.getElementById(id);if(el) el.value='Erro ao salvar. Verifique o token GitHub.';
+    });
     toast('Erro ao salvar snapshot.','err');
-    if(btnGerar){btnGerar.textContent='🔄 Gerar / Atualizar links';btnGerar.disabled=false;}
     return;
   }
 
   const base='https://criativaphb0-del.github.io/criativa-dashboard/?cliente='+snapId;
-  if(lc) lc.value=base+'&aba=conversao';
-  if(lr) lr.value=base+'&aba=reconhecimento';
-  if(btnGerar){btnGerar.textContent='🔄 Gerar / Atualizar links';btnGerar.disabled=false;}
+  document.getElementById('link-conversao').value    = base+'&aba=conversao';
+  document.getElementById('link-aquecimento').value  = base+'&aba=reconhecimento&modo=aquecimento';
+  document.getElementById('link-independente').value = base+'&aba=reconhecimento&modo=independente';
   toast('Links gerados ✓','ok');
 }
 
@@ -1642,9 +1650,12 @@ window.addEventListener('DOMContentLoaded',async ()=>{
       updatePill();
       document.getElementById('main-tabs').style.display='flex';
 
-      // Detectar qual aba abrir pelo parâmetro ?aba=
+      // Detectar qual aba e modo abrir pelos parâmetros da URL
       const abaParam=params.get('aba')||'conversao';
+      const modoParam=params.get('modo')||'aquecimento';
       curTab=abaParam;
+      curRecMode=modoParam;
+
       document.getElementById('tab-conversao').classList.toggle('active',abaParam==='conversao');
       document.getElementById('tab-reconhecimento').classList.toggle('active',abaParam==='reconhecimento');
       document.getElementById('content').style.display=abaParam==='conversao'?'':'none';
