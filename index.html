@@ -721,7 +721,33 @@ async function gistLoad(key){
 // ── SALVAR SNAPSHOT NO GITHUB PAGES ──
 async function saveClientSnapshot(){
   const gh=getGHToken();
-  if(!curAcc||!STATE.account||!gh){toast('Salve o token GitHub na tela de login.','err');return null;}
+  if(!curAcc||!STATE.account||!gh){toast('Configure o token GitHub para gerar links.','err');return null;}
+  toast('Buscando campanhas e conjuntos...','');
+  const T=`access_token=${TOKEN}`;
+  const META_PRESETS=['today','yesterday','last_7d','last_14d','last_28d','last_30d','this_month','last_month','this_quarter','this_year','maximum'];
+  let pp='';
+  if(curPeriod==='custom'&&curCustomRange) pp=`insights.time_range(${JSON.stringify(curCustomRange)})`;
+  else if(META_PRESETS.includes(curPeriod)) pp=`insights.date_preset(${curPeriod})`;
+  else pp=`insights.date_preset(this_month)`;
+  // Buscar todas as campanhas com conjuntos e anuncios
+  let campsCompletas=[];
+  try{
+    const campR=await fetch(`https://graph.facebook.com/v19.0/act_${curAcc.id}/campaigns?fields=id,name,objective,status,${pp}{spend,reach,impressions,clicks,ctr,cpm,frequency,actions}&limit=50&${T}`).then(r=>r.json());
+    const camps=campR.data||[];
+    campsCompletas=await Promise.all(camps.map(async camp=>{
+      try{
+        const adsetR=await fetch(`https://graph.facebook.com/v19.0/${camp.id}/adsets?fields=id,name,status,${pp}{spend,reach,impressions,clicks,ctr,cpm,frequency,actions}&limit=50&${T}`).then(r=>r.json());
+        const adsets=adsetR.data||[];
+        const adsetsCompletos=await Promise.all(adsets.map(async as=>{
+          try{
+            const adR=await fetch(`https://graph.facebook.com/v19.0/${as.id}/ads?fields=id,name,status,creative{title,body,object_story_spec},${pp}{spend,reach,impressions,clicks,ctr,cpm,frequency,actions}&limit=50&${T}`).then(r=>r.json());
+            return{...as,ads:adR.data||[]};
+          }catch(e){return{...as,ads:[]};}
+        }));
+        return{...camp,adsets:adsetsCompletos};
+      }catch(e){return{...camp,adsets:[]};}
+    }));
+  }catch(e){campsCompletas=STATE_REC[curAcc.id]?.camps||[];}
   const snapId=`${curAcc.id}_${curPeriod}`;
   const snapFile=`data/snap_${snapId}.json`;
   const snapshot={
@@ -729,26 +755,16 @@ async function saveClientSnapshot(){
     gerado:new Date().toISOString(),
     state:{account:STATE.account,age:STATE.age,platform:STATE.platform,creatives:STATE.creatives,regions:STATE.regions},
     manual:loadManual(),
-    stateRec: STATE_REC[curAcc.id] ? {
-      ...STATE_REC[curAcc.id],
-      camps: (STATE_REC[curAcc.id].camps||[]).map(c=>({
-        ...c,
-        adsets: c.id===REC_SELECTED_CAMP
-          ? REC_ADSETS.map(as=>({...as, ads:as.id===REC_SELECTED_ADSET?REC_ADS:(as.ads||[])}))
-          : (c.adsets||[])
-      }))
-    } : null,
+    stateRec:{...(STATE_REC[curAcc.id]||{}),camps:campsCompletas},
   };
   const content_b64=btoa(unescape(encodeURIComponent(JSON.stringify(snapshot))));
-  // Verificar SHA existente
   let sha='';
   try{
     const chk=await fetch(`https://api.github.com/repos/${REPO}/contents/${snapFile}`,
       {headers:{'Authorization':'Bearer '+gh,'Accept':'application/vnd.github+json'}});
     if(chk.ok){const d=await chk.json();sha=d.sha||'';}
   }catch(e){}
-  // Upload
-  const body={message:`Snapshot ${curAcc.name}`,content:content_b64,branch:'main'};
+  const body={message:`Snapshot ${curAcc.name} — ${curPeriodLabel}`,content:content_b64,branch:'main'};
   if(sha)body.sha=sha;
   try{
     const res=await fetch(`https://api.github.com/repos/${REPO}/contents/${snapFile}`,{
