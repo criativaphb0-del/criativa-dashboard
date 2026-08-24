@@ -689,80 +689,62 @@ function loadManual(){try{const v=localStorage.getItem(DK(curAcc?.id,curPeriod))
 
 // ── GIST STORAGE ──
 const GH_TOKEN_KEY='cri4_gh_token';
-const GIST_ID_KEY='cri4_gist_id';
-const DEFAULT_GIST='dedc477ad7417cd5d7cf37675e27876d'; // Gist público — snapshots clientes
+const PAGES_BASE='https://criativaphb0-del.github.io/criativa-dashboard/data/';
+const REPO='criativaphb0-del/criativa-dashboard';
 
 function getGHToken(){ return localStorage.getItem(GH_TOKEN_KEY)||''; }
-function getGistId(){ return localStorage.getItem(GIST_ID_KEY)||DEFAULT_GIST; }
 
-async function gistSave(key, value) {
-  try {
-    const gh=getGHToken();
-    await fetch('https://api.github.com/gists/' + getGistId(), {
-      method: 'PATCH',
-      headers: { 'Authorization': 'Bearer ' + gh, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ files: { ['cri4_' + key + '.json']: { content: JSON.stringify(value) } } })
-    });
-  } catch(e) {}
+async function gistSave(key, value){
+  try{localStorage.setItem('cri4_'+key,JSON.stringify(value));}catch(e){}
+}
+async function gistLoad(key){
+  try{const v=localStorage.getItem('cri4_'+key);return v?JSON.parse(v):null;}catch(e){return null;}
 }
 
-async function gistLoad(key) {
-  const gh=getGHToken();
-  if(!gh) return null;
-  try {
-    const res = await fetch('https://api.github.com/gists/' + getGistId(), {
-      headers: { 'Authorization': 'Bearer ' + gh, 'Accept': 'application/vnd.github+json' }
-    });
-    const data = await res.json();
-    const file = data.files?.['cri4_' + key + '.json'];
-    if (file?.content) return JSON.parse(file.content);
-  } catch(e) {}
-  return null;
-}
-
-// Salvar snapshot completo da conta para link do cliente
+// ── SALVAR SNAPSHOT NO GITHUB PAGES ──
 async function saveClientSnapshot(){
   const gh=getGHToken();
-  if(!curAcc||!STATE.account||!gh) return null;
-  const snapKey=`snap_${curAcc.id}_${curPeriod}`;
+  if(!curAcc||!STATE.account||!gh){toast('Salve o token GitHub na tela de login.','err');return null;}
+  const snapId=`${curAcc.id}_${curPeriod}`;
+  const snapFile=`data/snap_${snapId}.json`;
   const snapshot={
-    acc: curAcc, period: curPeriod, periodLabel: curPeriodLabel,
-    gerado: new Date().toISOString(),
-    state:{
-      account:  STATE.account,
-      age:      STATE.age,
-      platform: STATE.platform,
-      creatives:STATE.creatives,
-      regions:  STATE.regions,
-    },
-    manual: loadManual(),
-    // Incluir dados de reconhecimento se disponíveis
-    stateRec: STATE_REC[curAcc.id]||null,
+    acc:curAcc, period:curPeriod, periodLabel:curPeriodLabel,
+    gerado:new Date().toISOString(),
+    state:{account:STATE.account,age:STATE.age,platform:STATE.platform,creatives:STATE.creatives,regions:STATE.regions},
+    manual:loadManual(),
+    stateRec:STATE_REC[curAcc.id]||null,
   };
-  try {
-    const res=await fetch('https://api.github.com/gists/' + DEFAULT_GIST, {
-      method: 'PATCH',
-      headers: { 'Authorization': 'Bearer ' + gh, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ files: { [snapKey + '.json']: { content: JSON.stringify(snapshot) } } })
+  const content_b64=btoa(unescape(encodeURIComponent(JSON.stringify(snapshot))));
+  // Verificar SHA existente
+  let sha='';
+  try{
+    const chk=await fetch(`https://api.github.com/repos/${REPO}/contents/${snapFile}`,
+      {headers:{'Authorization':'Bearer '+gh,'Accept':'application/vnd.github+json'}});
+    if(chk.ok){const d=await chk.json();sha=d.sha||'';}
+  }catch(e){}
+  // Upload
+  const body={message:`Snapshot ${curAcc.name}`,content:content_b64,branch:'main'};
+  if(sha)body.sha=sha;
+  try{
+    const res=await fetch(`https://api.github.com/repos/${REPO}/contents/${snapFile}`,{
+      method:'PUT',
+      headers:{'Authorization':'Bearer '+gh,'Accept':'application/vnd.github+json','Content-Type':'application/json'},
+      body:JSON.stringify(body)
     });
-    if(!res.ok) return null;
-    const data=await res.json();
-    // Pegar raw_url do arquivo salvo — URL pública sem rate limit
-    const rawUrl=data.files?.[snapKey + '.json']?.raw_url;
-    if(!rawUrl) return null;
-    return encodeURIComponent(rawUrl);
-  } catch(e) { return null; }
+    if(!res.ok){const e=await res.json();toast('Erro: '+e.message,'err');return null;}
+    return snapId;
+  }catch(e){toast('Erro de conexão.','err');return null;}
 }
 
-async function loadClientSnapshot(encodedUrl){
-  try {
-    const rawUrl=decodeURIComponent(encodedUrl);
-    const res=await fetch(rawUrl);
-    if(!res.ok) return null;
+// ── CARREGAR SNAPSHOT VIA PAGES (sem autenticação, sem CORS) ──
+async function loadClientSnapshot(snapId){
+  const url=`${PAGES_BASE}snap_${snapId}.json?t=${Date.now()}`;
+  try{
+    const res=await fetch(url);
+    if(!res.ok)return null;
     return await res.json();
-  } catch(e) { return null; }
+  }catch(e){return null;}
 }
-
 function saveLocalFallback(key, value) { try { localStorage.setItem('cri4_' + key, JSON.stringify(value)); } catch(e) {} }
 function loadLocalFallback(key) { try { const v = localStorage.getItem('cri4_' + key); return v ? JSON.parse(v) : null; } catch(e) { return null; } }
 
