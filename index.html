@@ -728,8 +728,16 @@ async function saveClientSnapshot(){
   const snapshot={
     acc: curAcc, period: curPeriod, periodLabel: curPeriodLabel,
     gerado: new Date().toISOString(),
-    state:{ account:STATE.account, age:STATE.age, platform:STATE.platform, creatives:STATE.creatives, regions:STATE.regions },
+    state:{
+      account:  STATE.account,
+      age:      STATE.age,
+      platform: STATE.platform,
+      creatives:STATE.creatives,
+      regions:  STATE.regions,
+    },
     manual: loadManual(),
+    // Incluir dados de reconhecimento se disponíveis
+    stateRec: STATE_REC[curAcc.id]||null,
   };
   try {
     const res=await fetch('https://api.github.com/gists/' + DEFAULT_GIST, {
@@ -1229,8 +1237,13 @@ function switchMainTab(tab){
   document.getElementById('content').style.display=tab==='conversao'?'':'none';
   document.getElementById('content-rec').style.display=tab==='reconhecimento'?'':'none';
   if(tab==='reconhecimento'&&curAcc){
-    if(!STATE_REC[curAcc.id]) fetchRec();
-    else renderReconhecimento(STATE_REC[curAcc.id]);
+    // Modo cliente: usar dados do STATE_REC já populados pelo snapshot
+    if(IS_CLIENT_MODE&&STATE_REC[curAcc.id]?.account){
+      renderReconhecimento(STATE_REC[curAcc.id]);
+    } else if(!IS_CLIENT_MODE){
+      if(!STATE_REC[curAcc.id]) fetchRec();
+      else renderReconhecimento(STATE_REC[curAcc.id]);
+    }
   }
 }
 
@@ -1587,11 +1600,30 @@ window.addEventListener('DOMContentLoaded',async ()=>{
       curAcc=snap.acc;
       curPeriod=snap.period||'this_month';
       curPeriodLabel=snap.periodLabel||'Período';
+
+      // Popular STATE para aba de Conversão
       STATE=snap.state||{};
       STATE.manual=snap.manual||{};
+      STATE.adAge=[];
+      STATE.adsCopy=[];
+
+      // Popular STATE_REC para aba de Reconhecimento
+      STATE_REC[curAcc.id]=snap.stateRec||{
+        account:  snap.state?.account||null,
+        age:      snap.state?.age||[],
+        platform: snap.state?.platform||[],
+        regions:  snap.state?.regions||[],
+        camps:    [],
+      };
+
       updatePill();
       document.getElementById('main-tabs').style.display='flex';
+      document.getElementById('content').style.display='';
+      document.getElementById('content-rec').style.display='none';
+
+      // Renderizar aba de conversão
       renderDashboard();
+
       document.getElementById('footer-txt').textContent=`${snap.acc?.name||'—'} · ${snap.periodLabel||''} · Gerado em ${new Date(snap.gerado).toLocaleDateString('pt-BR')}`;
     } else {
       document.getElementById('content').innerHTML=`
