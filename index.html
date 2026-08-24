@@ -690,7 +690,7 @@ function loadManual(){try{const v=localStorage.getItem(DK(curAcc?.id,curPeriod))
 // ── GIST STORAGE ──
 const GH_TOKEN_KEY='cri4_gh_token';
 const GIST_ID_KEY='cri4_gist_id';
-const DEFAULT_GIST='46a0fea910f1006dde3f1723989d6c83';
+const DEFAULT_GIST='dedc477ad7417cd5d7cf37675e27876d'; // Gist público — snapshots clientes
 
 function getGHToken(){ return localStorage.getItem(GH_TOKEN_KEY)||''; }
 function getGistId(){ return localStorage.getItem(GIST_ID_KEY)||DEFAULT_GIST; }
@@ -743,15 +743,19 @@ async function saveClientSnapshot(){
 }
 
 async function loadClientSnapshot(snapKey){
-  const gh=getGHToken();
-  if(!gh) return null;
+  // Gist é público — leitura sem token
   try {
-    const res=await fetch('https://api.github.com/gists/' + getGistId(), {
-      headers: { 'Authorization': 'Bearer ' + gh, 'Accept': 'application/vnd.github+json' }
+    const res=await fetch('https://api.github.com/gists/' + DEFAULT_GIST, {
+      headers: { 'Accept': 'application/vnd.github+json' }
     });
     const data=await res.json();
     const file=data.files?.[snapKey + '.json'];
     if(file?.content) return JSON.parse(file.content);
+    // Se o arquivo for truncado, buscar conteúdo raw
+    if(file?.truncated && file?.raw_url){
+      const raw=await fetch(file.raw_url);
+      return await raw.json();
+    }
   } catch(e) {}
   return null;
 }
