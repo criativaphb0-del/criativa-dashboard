@@ -610,16 +610,24 @@ body.client-mode .sb-toggle-btn{display:none!important}
 <div class="modal-overlay" id="share-modal" style="display:none" onclick="if(event.target===this)closeShareModal()">
   <div class="modal-box" onclick="event.stopPropagation()">
     <div class="modal-title">🔗 Link do cliente</div>
-    <div class="modal-sub">Os dados atuais da conta são salvos na nuvem e o cliente acessa com um link direto — sem precisar de token ou login.</div>
-    <div class="modal-note">
-      ✅ O cliente abre o link e vê o dashboard no modo cliente automaticamente, com os dados do período selecionado.
+    <div class="modal-sub">Os dados são salvos na nuvem. O cliente abre o link e vê o dashboard sem precisar de token ou login.</div>
+    <div class="modal-note">✅ Cada aba gera um link separado. O cliente vê apenas a aba enviada.</div>
+    <span class="modal-label">Conta: <strong id="modal-acc-name">—</strong></span>
+    <div style="margin-top:.9rem;margin-bottom:.5rem">
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:6px">Link — Conversão & Mensagens</div>
+      <div class="link-box">
+        <input class="link-input" id="link-conversao" readonly value="Clique em Gerar →">
+        <button class="btn-copy" onclick="copyLink('link-conversao')">Copiar</button>
+      </div>
     </div>
-    <span class="modal-label">Link gerado para <strong id="modal-acc-name">—</strong></span>
-    <div class="link-box" style="margin-bottom:.75rem;margin-top:.4rem">
-      <input class="link-input" id="current-link-input" readonly value="Clique em Gerar link →">
-      <button class="btn-copy" onclick="copyLink('current-link-input')">Copiar</button>
+    <div style="margin-bottom:.9rem">
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:6px">Link — Reconhecimento & Engajamento</div>
+      <div class="link-box">
+        <input class="link-input" id="link-reconhecimento" readonly value="Clique em Gerar →">
+        <button class="btn-copy" onclick="copyLink('link-reconhecimento')">Copiar</button>
+      </div>
     </div>
-    <button class="btn-main" id="btn-gerar-link" onclick="openShareModal()" style="margin-top:0;margin-bottom:.75rem">🔄 Gerar / Atualizar link</button>
+    <button class="btn-main" id="btn-gerar-link" onclick="openShareModal()" style="margin-top:0;margin-bottom:.75rem">🔄 Gerar / Atualizar links</button>
     <button class="btn-modal-close" onclick="closeShareModal()">Fechar</button>
   </div>
 </div>
@@ -712,7 +720,15 @@ async function saveClientSnapshot(){
     gerado:new Date().toISOString(),
     state:{account:STATE.account,age:STATE.age,platform:STATE.platform,creatives:STATE.creatives,regions:STATE.regions},
     manual:loadManual(),
-    stateRec:STATE_REC[curAcc.id]||null,
+    stateRec: STATE_REC[curAcc.id] ? {
+      ...STATE_REC[curAcc.id],
+      camps: (STATE_REC[curAcc.id].camps||[]).map(c=>({
+        ...c,
+        adsets: c.id===REC_SELECTED_CAMP
+          ? REC_ADSETS.map(as=>({...as, ads:as.id===REC_SELECTED_ADSET?REC_ADS:(as.ads||[])}))
+          : (c.adsets||[])
+      }))
+    } : null,
   };
   const content_b64=btoa(unescape(encodeURIComponent(JSON.stringify(snapshot))));
   // Verificar SHA existente
@@ -784,37 +800,43 @@ function showShareModal(){
   const modal=document.getElementById('share-modal');
   const nameEl=document.getElementById('modal-acc-name');
   if(nameEl) nameEl.textContent=curAcc.name;
-  document.getElementById('current-link-input').value='Clique em "Gerar / Atualizar link" →';
+  const lc=document.getElementById('link-conversao');
+  const lr=document.getElementById('link-reconhecimento');
+  if(lc) lc.value='Clique em "Gerar / Atualizar links" →';
+  if(lr) lr.value='Clique em "Gerar / Atualizar links" →';
   modal.style.display='flex';
 }
 
 async function openShareModal(){
   if(!curAcc){toast('Selecione uma conta primeiro.','err');return;}
-  if(!STATE.account){toast('Atualize os dados antes de gerar o link.','err');return;}
+  if(!STATE.account){toast('Atualize os dados antes de gerar os links.','err');return;}
 
   const modal=document.getElementById('share-modal');
-  const curInput=document.getElementById('current-link-input');
   const btnGerar=document.getElementById('btn-gerar-link');
+  const lc=document.getElementById('link-conversao');
+  const lr=document.getElementById('link-reconhecimento');
 
   modal.style.display='flex';
   const nameEl=document.getElementById('modal-acc-name');
   if(nameEl) nameEl.textContent=curAcc.name;
-  curInput.value='Salvando dados na nuvem...';
+  if(lc) lc.value='Salvando...';
+  if(lr) lr.value='Salvando...';
   if(btnGerar){btnGerar.textContent='⏳ Salvando...';btnGerar.disabled=true;}
 
-  const snapKey=await saveClientSnapshot();
-  if(!snapKey){
-    curInput.value='Erro ao salvar. Verifique a conexão.';
+  const snapId=await saveClientSnapshot();
+  if(!snapId){
+    if(lc) lc.value='Erro ao salvar.';
+    if(lr) lr.value='Erro ao salvar.';
     toast('Erro ao salvar snapshot.','err');
-    if(btnGerar){btnGerar.textContent='🔄 Gerar / Atualizar link';btnGerar.disabled=false;}
+    if(btnGerar){btnGerar.textContent='🔄 Gerar / Atualizar links';btnGerar.disabled=false;}
     return;
   }
 
-  const base=window.location.origin+window.location.pathname;
-  const link=`${base}?cliente=${snapKey}`;
-  curInput.value=link;
-  if(btnGerar){btnGerar.textContent='🔄 Gerar / Atualizar link';btnGerar.disabled=false;}
-  toast('Link gerado ✓','ok');
+  const base='https://criativaphb0-del.github.io/criativa-dashboard/?cliente='+snapId;
+  if(lc) lc.value=base+'&aba=conversao';
+  if(lr) lr.value=base+'&aba=reconhecimento';
+  if(btnGerar){btnGerar.textContent='🔄 Gerar / Atualizar links';btnGerar.disabled=false;}
+  toast('Links gerados ✓','ok');
 }
 
 function closeShareModal(){
@@ -1286,6 +1308,17 @@ async function fetchRec(){
 }
 
 async function fetchRecCamp(campId){
+  if(!TOKEN&&IS_CLIENT_MODE){
+    // Modo cliente: usar dados do snapshot
+    REC_SELECTED_CAMP=campId;
+    REC_SELECTED_ADSET=null;
+    REC_ADS=[];
+    // Conjuntos podem estar no stateRec
+    const campData=STATE_REC[curAcc?.id]?.camps?.find(c=>c.id===campId);
+    REC_ADSETS=campData?.adsets||[];
+    if(curAcc&&STATE_REC[curAcc.id]) renderReconhecimento(STATE_REC[curAcc.id]);
+    return;
+  }
   if(!TOKEN)return;
   REC_SELECTED_CAMP=campId;REC_SELECTED_ADSET=null;REC_ADS=[];
   const T=`access_token=${TOKEN}`;
@@ -1300,6 +1333,14 @@ async function fetchRecCamp(campId){
 }
 
 async function fetchRecAdset(adsetId){
+  if(!TOKEN&&IS_CLIENT_MODE){
+    // Modo cliente: usar anúncios do snapshot
+    REC_SELECTED_ADSET=adsetId;
+    const adsetData=REC_ADSETS.find(a=>a.id===adsetId);
+    REC_ADS=adsetData?.ads||[];
+    if(curAcc&&STATE_REC[curAcc.id]) renderReconhecimento(STATE_REC[curAcc.id]);
+    return;
+  }
   if(!TOKEN)return;
   REC_SELECTED_ADSET=adsetId;
   const T=`access_token=${TOKEN}`;
@@ -1595,16 +1636,25 @@ window.addEventListener('DOMContentLoaded',async ()=>{
         age:      snap.state?.age||[],
         platform: snap.state?.platform||[],
         regions:  snap.state?.regions||[],
-        camps:    [],
+        camps:    snap.stateRec?.camps||[],
       };
 
       updatePill();
       document.getElementById('main-tabs').style.display='flex';
-      document.getElementById('content').style.display='';
-      document.getElementById('content-rec').style.display='none';
 
-      // Renderizar aba de conversão
-      renderDashboard();
+      // Detectar qual aba abrir pelo parâmetro ?aba=
+      const abaParam=params.get('aba')||'conversao';
+      curTab=abaParam;
+      document.getElementById('tab-conversao').classList.toggle('active',abaParam==='conversao');
+      document.getElementById('tab-reconhecimento').classList.toggle('active',abaParam==='reconhecimento');
+      document.getElementById('content').style.display=abaParam==='conversao'?'':'none';
+      document.getElementById('content-rec').style.display=abaParam==='reconhecimento'?'':'none';
+
+      if(abaParam==='reconhecimento'){
+        renderReconhecimento(STATE_REC[curAcc.id]);
+      } else {
+        renderDashboard();
+      }
 
       document.getElementById('footer-txt').textContent=`${snap.acc?.name||'—'} · ${snap.periodLabel||''} · Gerado em ${new Date(snap.gerado).toLocaleDateString('pt-BR')}`;
     } else {
