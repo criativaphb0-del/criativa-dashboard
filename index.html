@@ -732,32 +732,27 @@ async function saveClientSnapshot(){
     manual: loadManual(),
   };
   try {
-    const res=await fetch('https://api.github.com/gists/' + getGistId(), {
+    const res=await fetch('https://api.github.com/gists/' + DEFAULT_GIST, {
       method: 'PATCH',
       headers: { 'Authorization': 'Bearer ' + gh, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
       body: JSON.stringify({ files: { [snapKey + '.json']: { content: JSON.stringify(snapshot) } } })
     });
-    if(res.ok) return snapKey;
-  } catch(e) {}
-  return null;
+    if(!res.ok) return null;
+    const data=await res.json();
+    // Pegar raw_url do arquivo salvo — URL pública sem rate limit
+    const rawUrl=data.files?.[snapKey + '.json']?.raw_url;
+    if(!rawUrl) return null;
+    return encodeURIComponent(rawUrl);
+  } catch(e) { return null; }
 }
 
-async function loadClientSnapshot(snapKey){
-  // Gist é público — leitura sem token
+async function loadClientSnapshot(encodedUrl){
   try {
-    const res=await fetch('https://api.github.com/gists/' + DEFAULT_GIST, {
-      headers: { 'Accept': 'application/vnd.github+json' }
-    });
-    const data=await res.json();
-    const file=data.files?.[snapKey + '.json'];
-    if(file?.content) return JSON.parse(file.content);
-    // Se o arquivo for truncado, buscar conteúdo raw
-    if(file?.truncated && file?.raw_url){
-      const raw=await fetch(file.raw_url);
-      return await raw.json();
-    }
-  } catch(e) {}
-  return null;
+    const rawUrl=decodeURIComponent(encodedUrl);
+    const res=await fetch(rawUrl);
+    if(!res.ok) return null;
+    return await res.json();
+  } catch(e) { return null; }
 }
 
 function saveLocalFallback(key, value) { try { localStorage.setItem('cri4_' + key, JSON.stringify(value)); } catch(e) {} }
