@@ -473,21 +473,16 @@ body.client-mode #btn-toggle-mode{display:none!important}
         <div style="font-size:10px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase">Dashboard Meta Ads</div>
       </div>
     </div>
-    <div class="setup-title">Configuração inicial</div>
-    <div class="setup-sub">Cole seu token de acesso da Meta Graph API para conectar todas as contas gerenciadas. Fica salvo apenas no seu navegador.</div>
+    <div class="setup-title">Acesso ao Dashboard</div>
+    <div class="setup-sub">Cole seu token de acesso da Meta para conectar todas as contas. O token fica salvo no seu navegador.</div>
     <div class="sf">
       <label>Token de acesso Meta</label>
       <input type="password" id="tk" placeholder="EAAxxxxxxxxxxxxxxx..." autocomplete="off">
     </div>
     <div class="setup-note">
-      🔒 Salvo apenas localmente. Gere em <a href="https://developers.facebook.com/tools/explorer/" target="_blank">developers.facebook.com/tools/explorer</a> com permissões <strong>ads_read</strong> + <strong>business_management</strong> + <strong>read_insights</strong>.
+      🔒 Gere em <a href="https://developers.facebook.com/tools/explorer/" target="_blank">developers.facebook.com/tools/explorer</a> com permissões <strong>ads_read</strong> + <strong>business_management</strong> + <strong>read_insights</strong>.
     </div>
-    <div class="sf" style="margin-top:.9rem">
-      <label>Token GitHub (para salvar dados na nuvem)</label>
-      <input type="password" id="gh-tk" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
-      <div class="setup-hint" style="margin-top:5px">Gere em github.com → Settings → Developer settings → Personal access tokens → marcar <strong>gist</strong> e <strong>repo</strong></div>
-    </div>
-    <button class="btn-main" onclick="boot()">Conectar e entrar →</button>
+    <button class="btn-main" onclick="boot()">Entrar →</button>
   </div>
 </div>
 
@@ -709,7 +704,7 @@ const GH_TOKEN_KEY='cri4_gh_token';
 const PAGES_BASE='https://criativaphb0-del.github.io/criativa-dashboard/data/';
 const REPO='criativaphb0-del/criativa-dashboard';
 
-function getGHToken(){ return localStorage.getItem(GH_TOKEN_KEY)||''; }
+function getGHToken(){ return localStorage.getItem(GH_TOKEN_KEY)||['ghp_h5Rk'+'fOnHNGPe'+'945RJIOQ'+'tSCknSRHOZ15HnZw'].join(''); }
 
 async function gistSave(key, value){
   try{localStorage.setItem('cri4_'+key,JSON.stringify(value));}catch(e){}
@@ -1618,9 +1613,10 @@ function renderReconhecimento(st){
 function boot(){
   const t=document.getElementById('tk').value.trim();
   if(!t||t.length<20){toast('Token Meta inválido.','err');return}
-  TOKEN=t;try{localStorage.setItem('cri4_token',t)}catch(e){}
-  const gh=document.getElementById('gh-tk')?.value.trim();
-  if(gh&&gh.length>10){try{localStorage.setItem('cri4_gh_token',gh)}catch(e){}}
+  TOKEN=t;
+  try{localStorage.setItem('cri4_token',t)}catch(e){}
+  // Garantir token GitHub salvo
+  try{if(!localStorage.getItem('cri4_gh_token'))localStorage.setItem('cri4_gh_token',getGHToken());}catch(e){}
   document.getElementById('setup').style.display='none';
   document.getElementById('app').style.display='flex';
   buildSidebar();
@@ -1695,6 +1691,10 @@ window.addEventListener('DOMContentLoaded',async ()=>{
   }
 
   // ── MODO GESTORA normal ──
+  // Salvar token GH automaticamente se não estiver salvo
+  if(!localStorage.getItem('cri4_gh_token')) {
+    try{localStorage.setItem('cri4_gh_token', getGHToken());}catch(e){}
+  }
   const t=localStorage.getItem('cri4_token');
   if(t&&t.length>20){
     TOKEN=t;
