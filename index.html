@@ -396,9 +396,6 @@ body.client-mode .sidebar{display:none}
 body.client-mode .btn-gestora-only{display:none!important}
 body.client-mode #rb{display:none!important}
 body.client-mode .sb-toggle-btn{display:none!important}
-body.client-mode .mode-pills{display:none!important}
-body.client-mode .main-tab:not(.active){display:none!important}
-body.client-mode #btn-toggle-mode{display:none!important}
 
 /* ── BOTÕES AÇÃO TOPBAR ─── */
 .btn-action{display:flex;align-items:center;gap:5px;padding:6px 11px;border-radius:var(--radius-sm);font-size:11px;font-weight:600;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:opacity .15s;white-space:nowrap}
@@ -473,16 +470,21 @@ body.client-mode #btn-toggle-mode{display:none!important}
         <div style="font-size:10px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase">Dashboard Meta Ads</div>
       </div>
     </div>
-    <div class="setup-title">Acesso ao Dashboard</div>
-    <div class="setup-sub">Cole seu token de acesso da Meta para conectar todas as contas. O token fica salvo no seu navegador.</div>
+    <div class="setup-title">Configuração inicial</div>
+    <div class="setup-sub">Cole seu token de acesso da Meta Graph API para conectar todas as contas gerenciadas. Fica salvo apenas no seu navegador.</div>
     <div class="sf">
       <label>Token de acesso Meta</label>
       <input type="password" id="tk" placeholder="EAAxxxxxxxxxxxxxxx..." autocomplete="off">
     </div>
     <div class="setup-note">
-      🔒 Gere em <a href="https://developers.facebook.com/tools/explorer/" target="_blank">developers.facebook.com/tools/explorer</a> com permissões <strong>ads_read</strong> + <strong>business_management</strong> + <strong>read_insights</strong>.
+      🔒 Salvo apenas localmente. Gere em <a href="https://developers.facebook.com/tools/explorer/" target="_blank">developers.facebook.com/tools/explorer</a> com permissões <strong>ads_read</strong> + <strong>business_management</strong> + <strong>read_insights</strong>.
     </div>
-    <button class="btn-main" onclick="boot()">Entrar →</button>
+    <div class="sf" style="margin-top:.9rem">
+      <label>Token GitHub (para salvar dados na nuvem)</label>
+      <input type="password" id="gh-tk" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
+      <div class="setup-hint" style="margin-top:5px">Gere em github.com → Settings → Developer settings → Personal access tokens → marcar <strong>gist</strong> e <strong>repo</strong></div>
+    </div>
+    <button class="btn-main" onclick="boot()">Conectar e entrar →</button>
   </div>
 </div>
 
@@ -607,30 +609,24 @@ body.client-mode #btn-toggle-mode{display:none!important}
 <!-- MODAL COMPARTILHAR -->
 <div class="modal-overlay" id="share-modal" style="display:none" onclick="if(event.target===this)closeShareModal()">
   <div class="modal-box" onclick="event.stopPropagation()">
-    <div class="modal-title">🔗 Links do cliente</div>
-    <div class="modal-sub">Cada link abre direto na visão certa — o cliente não vê outras abas nem pode trocar o modo.</div>
-    <div class="modal-note">Conta: <strong id="modal-acc-name">—</strong> · <span id="modal-period-label" style="opacity:.7">—</span></div>
-
-    <div style="margin-top:.9rem">
-      <div style="font-size:9px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:5px">📊 Conversão & Mensagens</div>
-      <div class="link-box" style="margin-bottom:.9rem">
+    <div class="modal-title">🔗 Link do cliente</div>
+    <div class="modal-sub">Os dados são salvos na nuvem. O cliente abre o link e vê o dashboard sem precisar de token ou login.</div>
+    <div class="modal-note">✅ Cada aba gera um link separado. O cliente vê apenas a aba enviada.</div>
+    <span class="modal-label">Conta: <strong id="modal-acc-name">—</strong></span>
+    <div style="margin-top:.9rem;margin-bottom:.5rem">
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:6px">Link — Conversão & Mensagens</div>
+      <div class="link-box">
         <input class="link-input" id="link-conversao" readonly value="Clique em Gerar →">
         <button class="btn-copy" onclick="copyLink('link-conversao')">Copiar</button>
       </div>
-
-      <div style="font-size:9px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:5px">🔥 Reconhecimento — Aquecimento de funil</div>
-      <div class="link-box" style="margin-bottom:.9rem">
-        <input class="link-input" id="link-aquecimento" readonly value="Clique em Gerar →">
-        <button class="btn-copy" onclick="copyLink('link-aquecimento')">Copiar</button>
-      </div>
-
-      <div style="font-size:9px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:5px">🎯 Reconhecimento — Campanha independente</div>
-      <div class="link-box" style="margin-bottom:.9rem">
-        <input class="link-input" id="link-independente" readonly value="Clique em Gerar →">
-        <button class="btn-copy" onclick="copyLink('link-independente')">Copiar</button>
+    </div>
+    <div style="margin-bottom:.9rem">
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:6px">Link — Reconhecimento & Engajamento</div>
+      <div class="link-box">
+        <input class="link-input" id="link-reconhecimento" readonly value="Clique em Gerar →">
+        <button class="btn-copy" onclick="copyLink('link-reconhecimento')">Copiar</button>
       </div>
     </div>
-
     <button class="btn-main" id="btn-gerar-link" onclick="openShareModal()" style="margin-top:0;margin-bottom:.75rem">🔄 Gerar / Atualizar links</button>
     <button class="btn-modal-close" onclick="closeShareModal()">Fechar</button>
   </div>
@@ -671,6 +667,8 @@ const ACCOUNTS=[
   {id:'1950560275591392',name:'Clínica Dra Rayanne',       niche:'Saúde',        color:'#DB2777', i:'RY'},
   {id:'2396913074107820',name:'CA Única',                  niche:'Geral',        color:'#6B7280', i:'UN'},
   {id:'1305367874878865',name:'Camila Santos Arq.',        niche:'Arquitetura',  color:'#0891B2', i:'CS'},
+  {id:'612676577277231', name:'Ricardo Veras',             niche:'Política',     color:'#1D4ED8', i:'RV'},
+  {id:'1073834415400515',name:'Clínica Urocentro',          niche:'Saúde',        color:'#0891B2', i:'UC'},
   {id:'2241111119999553',name:'Hilder Monção',             niche:'Política',     color:'#1D4ED8', i:'HM'},
   {id:'1624562512566873',name:'Campanha Política Hilder',  niche:'Política',     color:'#1E40AF', i:'PH'},
   // COM RESTRIÇÕES (mantidas para histórico)
@@ -704,7 +702,7 @@ const GH_TOKEN_KEY='cri4_gh_token';
 const PAGES_BASE='https://criativaphb0-del.github.io/criativa-dashboard/data/';
 const REPO='criativaphb0-del/criativa-dashboard';
 
-function getGHToken(){ return localStorage.getItem(GH_TOKEN_KEY)||['ghp_h5Rk'+'fOnHNGPe'+'945RJIOQ'+'tSCknSRHOZ15HnZw'].join(''); }
+function getGHToken(){ return localStorage.getItem(GH_TOKEN_KEY)||''; }
 
 async function gistSave(key, value){
   try{localStorage.setItem('cri4_'+key,JSON.stringify(value));}catch(e){}
@@ -716,33 +714,7 @@ async function gistLoad(key){
 // ── SALVAR SNAPSHOT NO GITHUB PAGES ──
 async function saveClientSnapshot(){
   const gh=getGHToken();
-  if(!curAcc||!STATE.account||!gh){toast('Configure o token GitHub para gerar links.','err');return null;}
-  toast('Buscando campanhas e conjuntos...','');
-  const T=`access_token=${TOKEN}`;
-  const META_PRESETS=['today','yesterday','last_7d','last_14d','last_28d','last_30d','this_month','last_month','this_quarter','this_year','maximum'];
-  let pp='';
-  if(curPeriod==='custom'&&curCustomRange) pp=`insights.time_range(${JSON.stringify(curCustomRange)})`;
-  else if(META_PRESETS.includes(curPeriod)) pp=`insights.date_preset(${curPeriod})`;
-  else pp=`insights.date_preset(this_month)`;
-  // Buscar todas as campanhas com conjuntos e anuncios
-  let campsCompletas=[];
-  try{
-    const campR=await fetch(`https://graph.facebook.com/v19.0/act_${curAcc.id}/campaigns?fields=id,name,objective,status,${pp}{spend,reach,impressions,clicks,ctr,cpm,frequency,actions}&limit=50&${T}`).then(r=>r.json());
-    const camps=campR.data||[];
-    campsCompletas=await Promise.all(camps.map(async camp=>{
-      try{
-        const adsetR=await fetch(`https://graph.facebook.com/v19.0/${camp.id}/adsets?fields=id,name,status,${pp}{spend,reach,impressions,clicks,ctr,cpm,frequency,actions}&limit=50&${T}`).then(r=>r.json());
-        const adsets=adsetR.data||[];
-        const adsetsCompletos=await Promise.all(adsets.map(async as=>{
-          try{
-            const adR=await fetch(`https://graph.facebook.com/v19.0/${as.id}/ads?fields=id,name,status,creative{title,body,object_story_spec},${pp}{spend,reach,impressions,clicks,ctr,cpm,frequency,actions}&limit=50&${T}`).then(r=>r.json());
-            return{...as,ads:adR.data||[]};
-          }catch(e){return{...as,ads:[]};}
-        }));
-        return{...camp,adsets:adsetsCompletos};
-      }catch(e){return{...camp,adsets:[]};}
-    }));
-  }catch(e){campsCompletas=STATE_REC[curAcc.id]?.camps||[];}
+  if(!curAcc||!STATE.account||!gh){toast('Salve o token GitHub na tela de login.','err');return null;}
   const snapId=`${curAcc.id}_${curPeriod}`;
   const snapFile=`data/snap_${snapId}.json`;
   const snapshot={
@@ -750,16 +722,26 @@ async function saveClientSnapshot(){
     gerado:new Date().toISOString(),
     state:{account:STATE.account,age:STATE.age,platform:STATE.platform,creatives:STATE.creatives,regions:STATE.regions},
     manual:loadManual(),
-    stateRec:{...(STATE_REC[curAcc.id]||{}),camps:campsCompletas},
+    stateRec: STATE_REC[curAcc.id] ? {
+      ...STATE_REC[curAcc.id],
+      camps: (STATE_REC[curAcc.id].camps||[]).map(c=>({
+        ...c,
+        adsets: c.id===REC_SELECTED_CAMP
+          ? REC_ADSETS.map(as=>({...as, ads:as.id===REC_SELECTED_ADSET?REC_ADS:(as.ads||[])}))
+          : (c.adsets||[])
+      }))
+    } : null,
   };
   const content_b64=btoa(unescape(encodeURIComponent(JSON.stringify(snapshot))));
+  // Verificar SHA existente
   let sha='';
   try{
     const chk=await fetch(`https://api.github.com/repos/${REPO}/contents/${snapFile}`,
       {headers:{'Authorization':'Bearer '+gh,'Accept':'application/vnd.github+json'}});
     if(chk.ok){const d=await chk.json();sha=d.sha||'';}
   }catch(e){}
-  const body={message:`Snapshot ${curAcc.name} — ${curPeriodLabel}`,content:content_b64,branch:'main'};
+  // Upload
+  const body={message:`Snapshot ${curAcc.name}`,content:content_b64,branch:'main'};
   if(sha)body.sha=sha;
   try{
     const res=await fetch(`https://api.github.com/repos/${REPO}/contents/${snapFile}`,{
@@ -817,44 +799,45 @@ function toggleClientMode(){
 // ── MODAL COMPARTILHAR ──
 function showShareModal(){
   if(!curAcc){toast('Selecione uma conta primeiro.','err');return;}
-  document.getElementById('modal-acc-name').textContent=curAcc.name;
-  const pl=document.getElementById('modal-period-label');
-  if(pl) pl.textContent=curPeriodLabel||'Período';
-  ['link-conversao','link-aquecimento','link-independente'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el) el.value='Clique em "Gerar / Atualizar links" →';
-  });
-  document.getElementById('share-modal').style.display='flex';
+  const modal=document.getElementById('share-modal');
+  const nameEl=document.getElementById('modal-acc-name');
+  if(nameEl) nameEl.textContent=curAcc.name;
+  const lc=document.getElementById('link-conversao');
+  const lr=document.getElementById('link-reconhecimento');
+  if(lc) lc.value='Clique em "Gerar / Atualizar links" →';
+  if(lr) lr.value='Clique em "Gerar / Atualizar links" →';
+  modal.style.display='flex';
 }
 
 async function openShareModal(){
   if(!curAcc){toast('Selecione uma conta primeiro.','err');return;}
   if(!STATE.account){toast('Atualize os dados antes de gerar os links.','err');return;}
+
+  const modal=document.getElementById('share-modal');
   const btnGerar=document.getElementById('btn-gerar-link');
-  document.getElementById('modal-acc-name').textContent=curAcc.name;
-  const pl=document.getElementById('modal-period-label');
-  if(pl) pl.textContent=curPeriodLabel||'Período';
-  document.getElementById('share-modal').style.display='flex';
-  ['link-conversao','link-aquecimento','link-independente'].forEach(id=>{
-    const el=document.getElementById(id);if(el) el.value='Salvando...';
-  });
+  const lc=document.getElementById('link-conversao');
+  const lr=document.getElementById('link-reconhecimento');
+
+  modal.style.display='flex';
+  const nameEl=document.getElementById('modal-acc-name');
+  if(nameEl) nameEl.textContent=curAcc.name;
+  if(lc) lc.value='Salvando...';
+  if(lr) lr.value='Salvando...';
   if(btnGerar){btnGerar.textContent='⏳ Salvando...';btnGerar.disabled=true;}
 
   const snapId=await saveClientSnapshot();
-
-  if(btnGerar){btnGerar.textContent='🔄 Gerar / Atualizar links';btnGerar.disabled=false;}
   if(!snapId){
-    ['link-conversao','link-aquecimento','link-independente'].forEach(id=>{
-      const el=document.getElementById(id);if(el) el.value='Erro ao salvar. Verifique o token GitHub.';
-    });
+    if(lc) lc.value='Erro ao salvar.';
+    if(lr) lr.value='Erro ao salvar.';
     toast('Erro ao salvar snapshot.','err');
+    if(btnGerar){btnGerar.textContent='🔄 Gerar / Atualizar links';btnGerar.disabled=false;}
     return;
   }
 
   const base='https://criativaphb0-del.github.io/criativa-dashboard/?cliente='+snapId;
-  document.getElementById('link-conversao').value    = base+'&aba=conversao';
-  document.getElementById('link-aquecimento').value  = base+'&aba=reconhecimento&modo=aquecimento';
-  document.getElementById('link-independente').value = base+'&aba=reconhecimento&modo=independente';
+  if(lc) lc.value=base+'&aba=conversao';
+  if(lr) lr.value=base+'&aba=reconhecimento';
+  if(btnGerar){btnGerar.textContent='🔄 Gerar / Atualizar links';btnGerar.disabled=false;}
   toast('Links gerados ✓','ok');
 }
 
@@ -1613,10 +1596,9 @@ function renderReconhecimento(st){
 function boot(){
   const t=document.getElementById('tk').value.trim();
   if(!t||t.length<20){toast('Token Meta inválido.','err');return}
-  TOKEN=t;
-  try{localStorage.setItem('cri4_token',t)}catch(e){}
-  // Garantir token GitHub salvo
-  try{if(!localStorage.getItem('cri4_gh_token'))localStorage.setItem('cri4_gh_token',getGHToken());}catch(e){}
+  TOKEN=t;try{localStorage.setItem('cri4_token',t)}catch(e){}
+  const gh=document.getElementById('gh-tk')?.value.trim();
+  if(gh&&gh.length>10){try{localStorage.setItem('cri4_gh_token',gh)}catch(e){}}
   document.getElementById('setup').style.display='none';
   document.getElementById('app').style.display='flex';
   buildSidebar();
@@ -1662,12 +1644,9 @@ window.addEventListener('DOMContentLoaded',async ()=>{
       updatePill();
       document.getElementById('main-tabs').style.display='flex';
 
-      // Detectar qual aba e modo abrir pelos parâmetros da URL
+      // Detectar qual aba abrir pelo parâmetro ?aba=
       const abaParam=params.get('aba')||'conversao';
-      const modoParam=params.get('modo')||'aquecimento';
       curTab=abaParam;
-      curRecMode=modoParam;
-
       document.getElementById('tab-conversao').classList.toggle('active',abaParam==='conversao');
       document.getElementById('tab-reconhecimento').classList.toggle('active',abaParam==='reconhecimento');
       document.getElementById('content').style.display=abaParam==='conversao'?'':'none';
@@ -1691,10 +1670,6 @@ window.addEventListener('DOMContentLoaded',async ()=>{
   }
 
   // ── MODO GESTORA normal ──
-  // Salvar token GH automaticamente se não estiver salvo
-  if(!localStorage.getItem('cri4_gh_token')) {
-    try{localStorage.setItem('cri4_gh_token', getGHToken());}catch(e){}
-  }
   const t=localStorage.getItem('cri4_token');
   if(t&&t.length>20){
     TOKEN=t;
